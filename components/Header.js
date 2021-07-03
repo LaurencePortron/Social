@@ -6,7 +6,7 @@ function Header(props) {
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.social}>Social</Text>
-      <Feather name='bell' size={25} color='black' />
+      <Feather name='bell' size={25} color='black' style={styles.bell} />
     </View>
   );
 }
@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderBottomWidth: 1,
     borderBottomColor: '#ECE6E0',
+    backgroundColor: 'white',
   },
   social: {
     marginLeft: 20,
@@ -27,6 +28,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#2F4858',
   },
+  bell: { marginRight: 20 },
 });
 
 export { Header };

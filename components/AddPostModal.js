@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Avatar from './avatar.png';
 import { AddPost } from './AddPost';
-import { Feather } from '@expo/vector-icons';
 
 function AddPostModal(props) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -53,12 +52,14 @@ const styles = StyleSheet.create({
     height: 70,
     borderBottomWidth: 1,
     borderBottomColor: '#ECE6E0',
-    marginTop: 20,
+    marginTop: 10,
+    backgroundColor: 'white',
   },
   mainSection: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 10,
   },
 
   postText: { color: '#A8A39F', fontSize: 18 },

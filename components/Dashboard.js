@@ -3,7 +3,7 @@ import { ScrollView, View, Text, Image, StyleSheet } from 'react-native';
 import { LogOut } from './LogOut';
 import { Header } from './Header';
 import { AddPostModal } from './AddPostModal';
-import Avatar from './avatar.png';
+import Avatar from './avatar.jpg';
 import firebase from 'firebase/app';
 import { useFirestoreCollection } from './hooks';
 import { Feather } from '@expo/vector-icons';
@@ -14,7 +14,7 @@ function Dashboard(props) {
   const db = firebase.firestore();
 
   const fetchPosts = useFirestoreCollection(
-    db.collection('posts').orderBy('date', 'asc'),
+    db.collection('posts').orderBy('date', 'desc'),
     []
   );
 
@@ -73,13 +73,13 @@ function Dashboard(props) {
 
 const styles = StyleSheet.create({
   postContainer: {
-    marginTop: 20,
+    marginTop: 10,
     backgroundColor: '#ECE6E0',
   },
   postSection: {
     display: 'flex',
     flexDirection: 'column',
-    marginBottom: 20,
+    marginBottom: 10,
     backgroundColor: 'white',
     padding: 10,
   },
