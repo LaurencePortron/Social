@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Feather } from '@expo/vector-icons';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import firebase from 'firebase/app';
 import { useHistory } from 'react-router-native';
 import { useFirestoreDocument } from './hooks';
@@ -31,8 +31,6 @@ function LogOut(props) {
   if (!getCurrentLoggedUser) {
     return null;
   }
-
-  console.log(getCurrentLoggedUser);
 
   return (
     <View style={styles.logOutContainer}>
