@@ -52,7 +52,10 @@ function AddPost({ setModalVisible, modalVisible }) {
         </TouchableOpacity>
       </View>
       <View style={styles.user}>
-        <Image source={Avatar} style={styles.avatarImage} />
+        <Image
+          // source={{ uri: getUserProfileInfo.data.profilePicture }}
+          style={styles.avatarImage}
+        />
         <Text style={styles.userName}>
           {getCurrentLoggedUser.data.userName}
         </Text>

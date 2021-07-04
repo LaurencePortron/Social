@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Avatar from './avatar.jpg';
 import firebase from 'firebase/app';
-import { useFirestoreCollection } from './hooks';
+import { useFirestoreCollection, useFirestoreDocument } from './hooks';
 import { Feather } from '@expo/vector-icons';
 import { useHistory } from 'react-router-native';
 
@@ -19,6 +19,15 @@ function Wall({ profileId }) {
   );
 
   const fetchAccounts = useFirestoreCollection(db.collection('accounts'), []);
+
+  const getUserProfileInfo = useFirestoreDocument(
+    db.collection('accounts').doc(profileId),
+    [profileId]
+  );
+
+  if (!getUserProfileInfo) {
+    return null;
+  }
 
   const goToProfile = (userId) => {
     history.push(`/profile/${userId}`);
@@ -41,23 +50,18 @@ function Wall({ profileId }) {
     }
   });
 
-  console.log(profileId);
-  // console.log('lolo', userId);
-
-  // you need to get the userId of the person's profile been clicked on NOT THE CURRENT PROFILE
-
-  // currently gettinh both ids on Profile click (logged in & clicked on user)
-
   return (
     <View style={styles.postContainer}>
       {fetchPosts.map((post) => {
-        // console.log('samy', post.data.userId);
         if (profileId === post.data.userId) {
           return (
             <View key={post.id} style={styles.postSection}>
               <View style={styles.userHeader}>
                 <TouchableOpacity onPress={() => goToProfile(userId)}>
-                  <Image source={Avatar} style={styles.avatarImage} />
+                  <Image
+                    source={{ uri: getUserProfileInfo.data.profilePicture }}
+                    style={styles.avatarImage}
+                  />
                 </TouchableOpacity>
                 <View style={styles.detailsContainer}>
                   <Text style={styles.userName}>{getUserName}</Text>

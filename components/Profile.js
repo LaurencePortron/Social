@@ -11,29 +11,28 @@ import {
 import firebase from 'firebase/app';
 import { useFirestoreDocument } from './hooks';
 import Wave from './wave.jpg';
-import Lolo from './lolo.jpg';
 import { useHistory } from 'react-router-native';
 import { Feather } from '@expo/vector-icons';
 import { Wall } from './Wall';
 import { CustomModal } from './CustomModal';
+import { UploadImageModal } from './UploadImageModal';
 
 function Profile(props) {
+  const [isOpen, setIsOpen] = useState(false);
   const history = useHistory();
   const user = firebase.auth().currentUser;
   const userId = user.uid;
   const profileId = props.match.params.id;
   const db = firebase.firestore();
 
-  // console.log('on profile', profileId);
+  const openUpload = () => {
+    setIsOpen(!isOpen);
+  };
 
   const getUserProfileInfo = useFirestoreDocument(
     db.collection('accounts').doc(profileId),
     [profileId]
   );
-
-  // console.log('getUserProfileInfo', getUserProfileInfo);
-
-  // console.log('username', getUserProfileInfo.data.userName);
 
   if (!getUserProfileInfo) {
     return null;
@@ -61,17 +60,29 @@ function Profile(props) {
         </TouchableOpacity>
         <Image source={Wave} style={styles.coverImage} />
         <View style={styles.profileImageSection}>
-          <Image source={Lolo} style={styles.profileImage} />
+          <Image
+            source={{ uri: getUserProfileInfo.data.profilePicture }}
+            style={styles.profileImage}
+          />
+
+          <View style={styles.cameraIconContainer}>
+            <TouchableOpacity onPress={openUpload}>
+              <Feather
+                name='camera'
+                size={35}
+                color='black'
+                style={styles.cameraIcon}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <Text style={styles.userName}>{getUserProfileInfo.data.userName}</Text>
       </View>
+      {isOpen ? <UploadImageModal profileId={profileId} /> : null}
+
       <View style={styles.profileOptions}>
-        <TouchableOpacity>
-          <View style={styles.editProfileButton}>
-            <Feather name='user-plus' size={24} color='black' />
-            <Text style={styles.editProfilePlaceholder}>Add Friend</Text>
-          </View>
-        </TouchableOpacity>
+        <CustomModal placeholder={placeholder} />
+
         <TouchableOpacity>
           <View style={styles.editProfileButton}>
             <Feather name='settings' size={24} color='black' />
@@ -119,6 +130,14 @@ const styles = StyleSheet.create({
     height: 200,
     borderWidth: 5,
     borderColor: 'white',
+  },
+  cameraIconContainer: {
+    bottom: 60,
+    left: 140,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    padding: 10,
+    borderRadius: 50,
+    width: 55,
   },
   userName: {
     fontWeight: 'bold',

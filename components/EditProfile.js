@@ -11,6 +11,7 @@ import { Feather } from '@expo/vector-icons';
 import firebase from 'firebase/app';
 import { useFirestoreDocument } from './hooks';
 import Avatar from './avatar.png';
+import { UploadImageModal } from './UploadImageModal';
 
 function EditProfile({ setModalVisible, modalVisible }) {
   const user = firebase.auth().currentUser;
@@ -46,17 +47,21 @@ function EditProfile({ setModalVisible, modalVisible }) {
         <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
           <Feather name='x' size={25} color='black' />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>EditProfile</Text>
+        <Text style={styles.headerTitle}>Edit Profile</Text>
         <TouchableOpacity onPress={addPostToWall}>
           <Text style={styles.postButton}>Save</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.user}>
-        <Image source={Avatar} style={styles.avatarImage} />
+        <Image
+          source={{ uri: getCurrentLoggedUser.data.profilePicture }}
+          style={styles.avatarImage}
+        />
         <Text style={styles.userName}>
           {getCurrentLoggedUser.data.userName}
         </Text>
       </View>
+
       <TextInput
         style={styles.textInput}
         textContentType='emailAddress'
@@ -67,6 +72,7 @@ function EditProfile({ setModalVisible, modalVisible }) {
         inputText={post}
         onChangeText={handlePost}
       />
+      <UploadImageModal />
     </View>
   );
 }
