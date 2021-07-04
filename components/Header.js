@@ -7,6 +7,7 @@ function Header(props) {
     <View style={styles.headerContainer}>
       <Text style={styles.social}>Social</Text>
       <Feather name='bell' size={25} color='black' style={styles.bell} />
+      {/* <Feather name='search' size={25} color='black' style={styles.bell} /> */}
     </View>
   );
 }

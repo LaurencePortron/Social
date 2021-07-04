@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   textInput: { color: 'black', fontSize: 18, marginLeft: 10, marginTop: 22 },
   toolsContainer: {
-    marginTop: 330,
+    marginTop: 270,
     bottom: 0,
     backgroundColor: '#E8E8E8',
     padding: 10,

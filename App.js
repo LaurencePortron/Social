@@ -7,6 +7,7 @@ import { Dashboard } from './components/Dashboard';
 import { UserContext } from './components/Context';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import { Profile } from './components/Profile';
 
 var firebaseConfig = {
   apiKey: 'AIzaSyDsxrCO7UQTovxcf-_IYc5I3yx4Q9orDAc',
@@ -42,6 +43,7 @@ export default function App() {
           )}
           <Route exact path='/signup' component={SignUp} />
           <Route exact path='/dashboard' component={Dashboard} />
+          <Route exact path='/profile' component={Profile} />
         </View>
       </NativeRouter>
     </UserContext.Provider>
