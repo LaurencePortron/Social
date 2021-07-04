@@ -7,10 +7,11 @@ import {
   Modal,
   TouchableOpacity,
 } from 'react-native';
-import Avatar from './avatar.png';
 import { AddPost } from './AddPost';
+import { Feather } from '@expo/vector-icons';
+import { EditProfile } from './EditProfile';
 
-function AddPostModal(props) {
+function CustomModal({ placeholder }) {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.mainContainer}>
@@ -18,10 +19,7 @@ function AddPostModal(props) {
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}
       >
-        <View style={styles.mainSection}>
-          <Image source={Avatar} style={styles.avatarImage} />
-          <Text style={styles.postText}>What's on your mind...</Text>
-        </View>
+        {placeholder}
       </TouchableOpacity>
       <View style={styles.centeredView}>
         <Modal
@@ -35,7 +33,7 @@ function AddPostModal(props) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <AddPost
+              <EditProfile
                 setModalVisible={setModalVisible}
                 modalVisible={modalVisible}
               />
@@ -49,20 +47,10 @@ function AddPostModal(props) {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    height: 70,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ECE6E0',
+    height: 80,
     marginTop: 10,
     backgroundColor: 'white',
   },
-  mainSection: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-
-  postText: { color: '#A8A39F', fontSize: 18 },
 
   centeredView: {
     flex: 1,
@@ -88,6 +76,19 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  editProfileButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E8E8E8',
+    padding: 10,
+    borderRadius: 10,
+    width: 150,
+    marginBottom: 10,
+    marginTop: 10,
+    marginLeft: 20,
+  },
+  editProfilePlaceholder: { marginLeft: 10, fontSize: 18 },
 });
 
-export { AddPostModal };
+export { CustomModal };
