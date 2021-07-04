@@ -54,7 +54,7 @@ function CustomSearchBar(props) {
         <TextInput
           style={styles.searchInput}
           name='text'
-          placeholder='Search Social..'
+          placeholder='Search Friends..'
           placeholderTextColor='#A8A39F'
           onChangeText={handleSearchInput}
         ></TextInput>
