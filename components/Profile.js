@@ -21,16 +21,25 @@ function Profile(props) {
   const history = useHistory();
   const user = firebase.auth().currentUser;
   const userId = user.uid;
+  const profileId = props.match.params.id;
+  const db = firebase.firestore();
 
-  const getCurrentLoggedUser = useFirestoreDocument(
-    firebase.firestore().collection('accounts').doc(userId),
-    [userId]
+  // console.log('on profile', profileId);
+
+  const getUserProfileInfo = useFirestoreDocument(
+    db.collection('accounts').doc(profileId),
+    [profileId]
   );
 
-  if (!getCurrentLoggedUser) {
+  // console.log('getUserProfileInfo', getUserProfileInfo);
+
+  // console.log('username', getUserProfileInfo.data.userName);
+
+  if (!getUserProfileInfo) {
     return null;
   }
 
+  console.log(profileId);
   const backToDashboard = () => {
     history.push(`/dashboard`);
   };
@@ -54,13 +63,15 @@ function Profile(props) {
         <View style={styles.profileImageSection}>
           <Image source={Lolo} style={styles.profileImage} />
         </View>
-        <Text style={styles.userName}>
-          {getCurrentLoggedUser.data.userName}
-        </Text>
+        <Text style={styles.userName}>{getUserProfileInfo.data.userName}</Text>
       </View>
       <View style={styles.profileOptions}>
-        <CustomModal placeholder={placeholder} />
-
+        <TouchableOpacity>
+          <View style={styles.editProfileButton}>
+            <Feather name='user-plus' size={24} color='black' />
+            <Text style={styles.editProfilePlaceholder}>Add Friend</Text>
+          </View>
+        </TouchableOpacity>
         <TouchableOpacity>
           <View style={styles.editProfileButton}>
             <Feather name='settings' size={24} color='black' />
@@ -83,7 +94,7 @@ function Profile(props) {
           <Text style={styles.infoPlaceholder}>Birthday</Text>
         </View>
       </View>
-      <Wall />
+      <Wall profileId={profileId} />
     </ScrollView>
   );
 }

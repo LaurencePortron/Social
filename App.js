@@ -43,7 +43,7 @@ export default function App() {
           )}
           <Route exact path='/signup' component={SignUp} />
           <Route exact path='/dashboard' component={Dashboard} />
-          <Route exact path='/profile' component={Profile} />
+          <Route exact path='/profile/:id' component={Profile} />
         </View>
       </NativeRouter>
     </UserContext.Provider>

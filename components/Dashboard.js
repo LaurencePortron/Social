@@ -1,30 +1,21 @@
 import React, { useState } from 'react';
-import {
-  ScrollView,
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { ScrollView, View, Text, Image, StyleSheet } from 'react-native';
 import { LogOut } from './LogOut';
 import { Header } from './Header';
 import { CustomModal } from './CustomModal';
 import { Wall } from './Wall';
-import { useHistory } from 'react-router-native';
 import Avatar from './avatar.png';
+import firebase from 'firebase/app';
 
 function Dashboard(props) {
-  const history = useHistory();
-
-  const openProfile = () => {
-    history.push(`/profile`);
-  };
+  const user = firebase.auth().currentUser;
+  const profileId = user.uid;
+  const db = firebase.firestore();
 
   const placeholder = (
     <View style={styles.mainSection}>
       <Image source={Avatar} style={styles.avatarImage} />
-      <Text style={styles.postText}>Whats on you mind..</Text>
+      <Text style={styles.postText}>Whats on your mind..</Text>
     </View>
   );
 
@@ -32,7 +23,7 @@ function Dashboard(props) {
     <ScrollView>
       <Header />
       <CustomModal placeholder={placeholder} />
-      <Wall />
+      <Wall profileId={profileId} />
       <LogOut />
     </ScrollView>
   );
