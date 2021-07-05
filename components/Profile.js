@@ -38,7 +38,6 @@ function Profile(props) {
     return null;
   }
 
-  console.log(profileId);
   const backToDashboard = () => {
     history.push(`/dashboard`);
   };
@@ -64,32 +63,49 @@ function Profile(props) {
             source={{ uri: getUserProfileInfo.data.profilePicture }}
             style={styles.profileImage}
           />
-
-          <View style={styles.cameraIconContainer}>
-            <TouchableOpacity onPress={openUpload}>
-              <Feather
-                name='camera'
-                size={35}
-                color='black'
-                style={styles.cameraIcon}
-              />
-            </TouchableOpacity>
-          </View>
+          {profileId !== userId ? null : (
+            <View style={styles.cameraIconContainer}>
+              <TouchableOpacity onPress={openUpload}>
+                <Feather
+                  name='camera'
+                  size={35}
+                  color='black'
+                  style={styles.cameraIcon}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
         <Text style={styles.userName}>{getUserProfileInfo.data.userName}</Text>
       </View>
       {isOpen ? <UploadImageModal profileId={profileId} /> : null}
 
-      <View style={styles.profileOptions}>
-        <CustomModal placeholder={placeholder} />
-
-        <TouchableOpacity>
-          <View style={styles.editProfileButton}>
-            <Feather name='settings' size={24} color='black' />
-            <Text style={styles.editProfilePlaceholder}>Settings</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+      {profileId !== userId ? (
+        <View style={styles.profileOptions}>
+          <TouchableOpacity>
+            <View style={styles.addFriendButton}>
+              <Feather name='user-plus' size={24} color='black' />
+              <Text style={styles.editProfilePlaceholder}>Add Friend</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.editProfileButton}>
+              <Feather name='info' size={24} color='black' />
+              <Text style={styles.editProfilePlaceholder}>About Samy</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.profileOptions}>
+          <CustomModal placeholder={placeholder} />
+          <TouchableOpacity>
+            <View style={styles.editProfileButton}>
+              <Feather name='settings' size={24} color='black' />
+              <Text style={styles.editProfilePlaceholder}>Settings</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
 
       <View style={styles.profileInfoContainer}>
         <View style={styles.profileInfoSection}>
@@ -180,6 +196,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#E8E8E8',
+    padding: 10,
+    borderRadius: 10,
+    width: 150,
+    marginBottom: 10,
+    marginTop: 10,
+    marginLeft: 20,
+  },
+  addFriendButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#6CA9D6',
     padding: 10,
     borderRadius: 10,
     width: 150,

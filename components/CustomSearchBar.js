@@ -11,7 +11,7 @@ import {
 import algoliasearch from 'algoliasearch/lite';
 import { useHistory } from 'react-router-native';
 
-const client = algoliasearch('CJQI1GSDF6', '23df10b43136c09b11a1e4979d7972a5');
+const client = algoliasearch('CJQI1GSDF6', 'cabdd688557ba08d0aea0ec15fb2d5bb');
 const index = client.initIndex('accounts');
 
 function CustomSearchBar(props) {
@@ -40,9 +40,6 @@ function CustomSearchBar(props) {
   const getUserIdOfSearch = searchResults.map((data) => {
     return data.objectID;
   });
-
-  console.log(getUserIdOfSearch);
-  // console.log(Object.values(getUserIdOfSearch));
 
   const openProfile = (getUserIdOfSearch) => {
     history.push(`/profile/${getUserIdOfSearch}`);
@@ -84,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
     top: 10,
     right: 90,
-    color: 'green',
+    padding: 10,
   },
 });
 

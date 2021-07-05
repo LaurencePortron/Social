@@ -10,7 +10,6 @@ import {
 import { Feather } from '@expo/vector-icons';
 import firebase from 'firebase/app';
 import { useFirestoreDocument } from './hooks';
-import Avatar from './avatar.png';
 
 function AddPost({ setModalVisible, modalVisible }) {
   const user = firebase.auth().currentUser;
@@ -35,7 +34,7 @@ function AddPost({ setModalVisible, modalVisible }) {
     db.collection('posts').add({
       post: post,
       userId: userId,
-      date: new Date(),
+      created: firebase.firestore.Timestamp.fromDate(new Date()),
     });
     setModalVisible(false);
   };

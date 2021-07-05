@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import Avatar from './avatar.jpg';
 import firebase from 'firebase/app';
 import { useFirestoreCollection, useFirestoreDocument } from './hooks';
 import { Feather } from '@expo/vector-icons';
 import { useHistory } from 'react-router-native';
+import moment from 'moment';
 
 function Wall({ profileId }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -14,7 +14,7 @@ function Wall({ profileId }) {
   const history = useHistory();
 
   const fetchPosts = useFirestoreCollection(
-    db.collection('posts').orderBy('date', 'desc'),
+    db.collection('posts').orderBy('created', 'desc'),
     []
   );
 
@@ -50,6 +50,14 @@ function Wall({ profileId }) {
     }
   });
 
+  const openPost = (postId) => {
+    history.push(`/post/${postId}`);
+  };
+
+  // const fetchComments = useFirestoreCollection(
+  //   db.collection('posts').doc(postId).collection('comments')[postId]
+  // );
+
   return (
     <View style={styles.postContainer}>
       {fetchPosts.map((post) => {
@@ -65,7 +73,9 @@ function Wall({ profileId }) {
                 </TouchableOpacity>
                 <View style={styles.detailsContainer}>
                   <Text style={styles.userName}>{getUserName}</Text>
-                  <Text style={styles.date}>{post.data.date.nanoseconds}</Text>
+                  <Text style={styles.date}>
+                    {moment(post.data.created.toDate()).format('MMM Do')}
+                  </Text>
                 </View>
               </View>
 
@@ -79,9 +89,11 @@ function Wall({ profileId }) {
                     <Text style={styles.reactionText}>0 love</Text>
                   )}
                 </View>
-                <View style={styles.reactionSection}>
-                  <Text style={styles.reactionText}> 13 comments</Text>
-                </View>
+                <TouchableOpacity onPress={() => openPost(post.id)}>
+                  <View style={styles.reactionSection}>
+                    <Text style={styles.reactionText}>2 comments</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
 
               <View style={styles.reactionContainer}>
@@ -98,10 +110,12 @@ function Wall({ profileId }) {
                     </View>
                   )}
                 </TouchableOpacity>
-                <View style={styles.reactionSection}>
-                  <Feather name='message-square' size={25} color='grey' />
-                  <Text style={styles.reactionText}>Comment</Text>
-                </View>
+                <TouchableOpacity onPress={() => openPost(post.id)}>
+                  <View style={styles.reactionSection}>
+                    <Feather name='message-square' size={25} color='grey' />
+                    <Text style={styles.reactionText}>Comment</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
           );

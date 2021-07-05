@@ -36,7 +36,7 @@ function EditProfile({ setModalVisible, modalVisible }) {
     db.collection('posts').add({
       post: post,
       userId: userId,
-      date: new Date(),
+      created: firebase.firestore.Timestamp.fromDate(new Date()),
     });
     setModalVisible(false);
   };
