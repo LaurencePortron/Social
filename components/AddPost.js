@@ -10,12 +10,16 @@ import {
 import { Feather } from '@expo/vector-icons';
 import firebase from 'firebase/app';
 import { useFirestoreDocument } from './hooks';
+import { UploadImageModal } from './UploadImageModal';
+import Avatar from './avatar.png';
 
 function AddPost({ setModalVisible, modalVisible }) {
+  const [post, setPost] = useState('');
+  const [uploadOpen, setUploadOpen] = useState(false);
+
   const user = firebase.auth().currentUser;
   const userId = user.uid;
   const db = firebase.firestore();
-  const [post, setPost] = useState('');
 
   const handlePost = (inputText) => {
     setPost(inputText);
@@ -52,8 +56,8 @@ function AddPost({ setModalVisible, modalVisible }) {
       </View>
       <View style={styles.user}>
         <Image
-          // source={{ uri: getUserProfileInfo.data.profilePicture }}
-          style={styles.avatarImage}
+          source={{ uri: getCurrentLoggedUser.data.profilePicture }}
+          style={styles.profileImage}
         />
         <Text style={styles.userName}>
           {getCurrentLoggedUser.data.userName}
@@ -70,10 +74,14 @@ function AddPost({ setModalVisible, modalVisible }) {
         onChangeText={handlePost}
       />
       <View style={styles.toolsContainer}>
-        <View style={styles.toolsSection}>
-          <Feather name='camera' size={25} color='black' />
-          <Text style={styles.toolText}>Photo</Text>
-        </View>
+        <TouchableOpacity onPress={() => setUploadOpen(!uploadOpen)}>
+          <View style={styles.toolsSection}>
+            <Feather name='camera' size={25} color='black' />
+            <Text style={styles.toolText}>Photo</Text>
+          </View>
+        </TouchableOpacity>
+        {uploadOpen ? <UploadImageModal postId={postId} /> : null}
+
         <View style={styles.toolsSection}>
           <Feather name='tag' size={25} color='black' />
           <Text style={styles.toolText}>Tag people</Text>
@@ -104,10 +112,10 @@ const styles = StyleSheet.create({
   headerTitle: { fontWeight: 'bold', fontSize: 18 },
   postButton: { fontWeight: 'bold', fontSize: 18, color: '#A8A39F' },
   userName: { fontSize: 18, fontWeight: 'bold' },
+  // profileImage:{width:300},
   user: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
   },
   textInput: { color: 'black', fontSize: 18, marginLeft: 10, marginTop: 22 },
   toolsContainer: {

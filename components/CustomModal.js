@@ -33,7 +33,7 @@ function CustomModal({ placeholder }) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <EditProfile
+              <AddPost
                 setModalVisible={setModalVisible}
                 modalVisible={modalVisible}
               />

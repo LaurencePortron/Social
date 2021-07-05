@@ -33,10 +33,6 @@ function Wall({ profileId }) {
     history.push(`/profile/${userId}`);
   };
 
-  const handleLikes = () => {
-    setIsLiked(!isLiked);
-  };
-
   const addLikesToDb = (postId) => {
     db.collection('posts').doc(postId).update({
       isLiked: true,

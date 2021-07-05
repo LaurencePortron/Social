@@ -14,7 +14,6 @@ import Wave from './wave.jpg';
 import { useHistory } from 'react-router-native';
 import { Feather } from '@expo/vector-icons';
 import { Wall } from './Wall';
-import { CustomModal } from './CustomModal';
 import { UploadImageModal } from './UploadImageModal';
 
 function Profile(props) {
@@ -42,13 +41,9 @@ function Profile(props) {
     history.push(`/dashboard`);
   };
 
-  const placeholder = (
-    <View style={styles.editProfileButton}>
-      <Feather name='settings' size={24} color='black' />
-      <Text style={styles.editProfilePlaceholder}>Edit Profile</Text>
-    </View>
-  );
-
+  const goToEditProfile = () => {
+    history.push(`/editProfile/${userId}`);
+  };
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <View style={styles.headerSection}>
@@ -58,6 +53,11 @@ function Profile(props) {
           </View>
         </TouchableOpacity>
         <Image source={Wave} style={styles.coverImage} />
+        <View style={styles.cameraIconCover}>
+          <TouchableOpacity onPress={openUpload}>
+            <Feather name='camera' size={35} color='black' />
+          </TouchableOpacity>
+        </View>
         <View style={styles.profileImageSection}>
           <Image
             source={{ uri: getUserProfileInfo.data.profilePicture }}
@@ -66,19 +66,14 @@ function Profile(props) {
           {profileId !== userId ? null : (
             <View style={styles.cameraIconContainer}>
               <TouchableOpacity onPress={openUpload}>
-                <Feather
-                  name='camera'
-                  size={35}
-                  color='black'
-                  style={styles.cameraIcon}
-                />
+                <Feather name='camera' size={35} color='black' />
               </TouchableOpacity>
             </View>
           )}
         </View>
         <Text style={styles.userName}>{getUserProfileInfo.data.userName}</Text>
       </View>
-      {isOpen ? <UploadImageModal profileId={profileId} /> : null}
+      {isOpen ? <UploadImageModal /> : null}
 
       {profileId !== userId ? (
         <View style={styles.profileOptions}>
@@ -97,7 +92,12 @@ function Profile(props) {
         </View>
       ) : (
         <View style={styles.profileOptions}>
-          <CustomModal placeholder={placeholder} />
+          <TouchableOpacity onPress={() => goToEditProfile(userId)}>
+            <View style={styles.editProfileButton}>
+              <Feather name='edit' size={24} color='black' />
+              <Text style={styles.editProfilePlaceholder}>Edit Profile</Text>
+            </View>
+          </TouchableOpacity>
           <TouchableOpacity>
             <View style={styles.editProfileButton}>
               <Feather name='settings' size={24} color='black' />
@@ -115,6 +115,7 @@ function Profile(props) {
         <View style={styles.profileInfoSection}>
           <Feather name='clock' size={24} color='black' />
           <Text style={styles.infoPlaceholder}>Joined </Text>
+          <Text style={styles.infoPlaceholderData}> 4th July </Text>
         </View>
         <View style={styles.profileInfoSection}>
           <Feather name='gift' size={24} color='black' />
@@ -146,6 +147,14 @@ const styles = StyleSheet.create({
     height: 200,
     borderWidth: 5,
     borderColor: 'white',
+  },
+  cameraIconCover: {
+    bottom: 180,
+    left: 310,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    padding: 10,
+    borderRadius: 50,
+    width: 55,
   },
   cameraIconContainer: {
     bottom: 60,
@@ -230,5 +239,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   infoPlaceholder: { marginLeft: 10, fontSize: 16, fontWeight: 'bold' },
+  infoPlaceholderData: { fontSize: 16 },
 });
 export { Profile };

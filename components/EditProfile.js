@@ -10,18 +10,14 @@ import {
 import { Feather } from '@expo/vector-icons';
 import firebase from 'firebase/app';
 import { useFirestoreDocument } from './hooks';
-import Avatar from './avatar.png';
-import { UploadImageModal } from './UploadImageModal';
+import { useHistory } from 'react-router-native';
 
-function EditProfile({ setModalVisible, modalVisible }) {
+function EditProfile(props) {
+  const history = useHistory();
   const user = firebase.auth().currentUser;
   const userId = user.uid;
   const db = firebase.firestore();
   const [post, setPost] = useState('');
-
-  const handlePost = (inputText) => {
-    setPost(inputText);
-  };
 
   const getCurrentLoggedUser = useFirestoreDocument(
     firebase.firestore().collection('accounts').doc(userId),
@@ -31,48 +27,73 @@ function EditProfile({ setModalVisible, modalVisible }) {
   if (!getCurrentLoggedUser) {
     return null;
   }
-
-  const addPostToWall = () => {
-    db.collection('posts').add({
-      post: post,
-      userId: userId,
-      created: firebase.firestore.Timestamp.fromDate(new Date()),
-    });
-    setModalVisible(false);
+  const backToProfile = () => {
+    history.push(`/profile/${userId}`);
   };
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-          <Feather name='x' size={25} color='black' />
+        <TouchableOpacity onPress={() => backToProfile(userId)}>
+          <Feather name='chevron-left' size={34} color='black' />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Edit Profile</Text>
-        <TouchableOpacity onPress={addPostToWall}>
+        <TouchableOpacity>
           <Text style={styles.postButton}>Save</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.user}>
-        <Image
-          source={{ uri: getCurrentLoggedUser.data.profilePicture }}
-          style={styles.avatarImage}
-        />
-        <Text style={styles.userName}>
-          {getCurrentLoggedUser.data.userName}
-        </Text>
-      </View>
+      <View style={styles.profileContainer}>
+        <View style={styles.profileSection}>
+          <Text style={styles.userPlaceHolder}>Profile Picture:</Text>
+          <Image
+            source={{ uri: getCurrentLoggedUser.data.profilePicture }}
+            style={styles.profilePicture}
+          />
+        </View>
+        <View style={styles.profileSection}>
+          <Text style={styles.userPlaceHolder}>Cover Photo:</Text>
+          <Image
+            source={{ uri: getCurrentLoggedUser.data.profilePicture }}
+            style={styles.profilePicture}
+          />
+        </View>
+        <View style={styles.profileSection}>
+          <Text style={styles.userPlaceHolder}>Username:</Text>
+          <TextInput
+            style={styles.userData}
+            textContentType='name'
+            name='username'
+            placeholder='Username'
+            placeholderTextColor='#A8A39F'
+          />
+        </View>
 
-      <TextInput
-        style={styles.textInput}
-        textContentType='emailAddress'
-        name='email'
-        placeholder='Whats on your mind?'
-        placeholderTextColor='#A8A39F'
-        required
-        inputText={post}
-        onChangeText={handlePost}
-      />
-      <UploadImageModal />
+        <View style={styles.profileSection}>
+          <Text style={styles.userPlaceHolder}>Email:</Text>
+          <TextInput
+            style={styles.userData}
+            textContentType='emailAddress'
+            name='email'
+            placeholder='Email'
+            placeholderTextColor='#A8A39F'
+          />
+        </View>
+
+        <View style={styles.profileSection}>
+          <Text style={styles.userPlaceHolder}>Location</Text>
+          <Text style={styles.userData}> </Text>
+        </View>
+        <View style={styles.profileSection}>
+          <Text style={styles.userPlaceHolder}>Birthday</Text>
+          <TextInput
+            style={styles.userData}
+            textContentType='emailAddress'
+            name='birthday'
+            placeholder='Birthday'
+            placeholderTextColor='#A8A39F'
+          />
+        </View>
+      </View>
     </View>
   );
 }
@@ -87,29 +108,30 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 10,
     marginRight: 10,
+    marginTop: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ECE6E0',
     padding: 15,
   },
-  headerTitle: { fontWeight: 'bold', fontSize: 18 },
-  postButton: { fontWeight: 'bold', fontSize: 18, color: '#A8A39F' },
+  headerTitle: { fontWeight: 'bold', fontSize: 25 },
+
+  postButton: { fontWeight: 'bold', fontSize: 25, color: '#A8A39F' },
+  profilePicture: { width: 100 },
   userName: { fontSize: 18, fontWeight: 'bold' },
-  user: {
+  profileContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginLeft: 10,
+  },
+  profileSection: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    margin: 10,
   },
-  textInput: { color: 'black', fontSize: 18, marginLeft: 10, marginTop: 22 },
-  toolsContainer: {
-    marginTop: 270,
-    bottom: 0,
-    backgroundColor: '#E8E8E8',
-    padding: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-  },
-  toolsSection: { display: 'flex', flexDirection: 'row', alignItems: 'center' },
-  toolText: { marginLeft: 10, fontSize: 18, padding: 10 },
+  userPlaceHolder: { fontSize: 20, fontWeight: 'bold' },
+  userData: { marginLeft: 10, fontSize: 18 },
 });
 
 export { EditProfile };
