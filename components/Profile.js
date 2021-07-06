@@ -18,6 +18,7 @@ import { UploadImageModal } from './UploadImageModal';
 
 function Profile(props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [friendRequested, setFriendRequested] = useState(false);
   const history = useHistory();
   const user = firebase.auth().currentUser;
   const userId = user.uid;
@@ -44,6 +45,26 @@ function Profile(props) {
   const goToEditProfile = () => {
     history.push(`/editProfile/${userId}`);
   };
+
+  // console.log('profileId', profileId);
+  // console.log('userId', userId);
+
+  const handleFriendRequest = (profileId) => {
+    db.collection('accounts').doc(userId).collection('friends').add({
+      isFriend: false,
+      friendId: profileId,
+    });
+    setFriendRequested(true);
+  };
+
+  // when you add a friend a collection (friends with id of the userId of the requested friend) in accounts of the user is created with the following data:
+  // 1. isFriend: true/false (false per default)
+
+  // steps:
+  // 1. click on add Friend (get user id of that friend that you want to add)
+  // 2. add a collection called friends with the friend userId, setting isFriend to false
+  // 3.
+
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <View style={styles.headerSection}>
@@ -77,12 +98,22 @@ function Profile(props) {
 
       {profileId !== userId ? (
         <View style={styles.profileOptions}>
-          <TouchableOpacity>
-            <View style={styles.addFriendButton}>
-              <Feather name='user-plus' size={24} color='black' />
-              <Text style={styles.editProfilePlaceholder}>Add Friend</Text>
-            </View>
-          </TouchableOpacity>
+          {friendRequested ? (
+            <TouchableOpacity>
+              <View style={styles.addFriendButton}>
+                <Feather name='check' size={24} color='black' />
+                <Text style={styles.editProfilePlaceholder}>Requested</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => handleFriendRequest(profileId)}>
+              <View style={styles.addFriendButton}>
+                <Feather name='user-plus' size={24} color='black' />
+                <Text style={styles.editProfilePlaceholder}>Add Friend</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity>
             <View style={styles.editProfileButton}>
               <Feather name='info' size={24} color='black' />
