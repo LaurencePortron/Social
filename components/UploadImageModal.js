@@ -38,6 +38,8 @@ function UploadImageModal({ profileId }) {
     }
   };
 
+  console.log(profileId);
+
   const uploadImage = async (uri) => {
     const response = await fetch(uri);
     const blob = await response.blob();

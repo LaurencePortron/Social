@@ -55,10 +55,8 @@ function CustomSearchBar(props) {
           placeholderTextColor='#A8A39F'
           onChangeText={handleSearchInput}
         ></TextInput>
-      </View>
-      <View style={styles.resultList}>
         <TouchableOpacity onPress={() => openProfile(getUserIdOfSearch)}>
-          <Text>{resultArray}</Text>
+          <Text style={styles.searchInput}>{resultArray}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -70,15 +68,26 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: 250,
     right: 20,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: 'grey',
+    borderRadius: 5,
     right: 90,
     top: 10,
+    shadowColor: '#000000',
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 1,
+    },
   },
-  searchInput: { padding: 10 },
+  searchInput: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'grey',
+  },
   resultList: {
-    backgroundColor: 'grey',
+    backgroundColor: 'white',
     top: 10,
     right: 90,
     padding: 10,

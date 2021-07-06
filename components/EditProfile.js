@@ -17,7 +17,16 @@ function EditProfile(props) {
   const user = firebase.auth().currentUser;
   const userId = user.uid;
   const db = firebase.firestore();
-  const [post, setPost] = useState('');
+  const [updateBirthday, setUpdateBirthday] = useState('');
+  const [updateLocation, setUpdateLocation] = useState('');
+
+  const handleBirthdayUpdate = (inputText) => {
+    setUpdateBirthday(inputText);
+  };
+
+  const handleLocationUpdate = (inputText) => {
+    setUpdateLocation(inputText);
+  };
 
   const getCurrentLoggedUser = useFirestoreDocument(
     firebase.firestore().collection('accounts').doc(userId),
@@ -31,6 +40,14 @@ function EditProfile(props) {
     history.push(`/profile/${userId}`);
   };
 
+  const handleSaveChanges = () => {
+    db.collection('accounts').doc(userId).update({
+      birthday: updateBirthday,
+      location: updateLocation,
+    });
+    history.push(`/profile/${userId}`);
+  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
@@ -38,7 +55,7 @@ function EditProfile(props) {
           <Feather name='chevron-left' size={34} color='black' />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Edit Profile</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSaveChanges}>
           <Text style={styles.postButton}>Save</Text>
         </TouchableOpacity>
       </View>
@@ -81,7 +98,14 @@ function EditProfile(props) {
 
         <View style={styles.profileSection}>
           <Text style={styles.userPlaceHolder}>Location</Text>
-          <Text style={styles.userData}> </Text>
+          <TextInput
+            style={styles.userData}
+            name='location'
+            placeholder='Location'
+            placeholderTextColor='#A8A39F'
+            onChangeText={handleLocationUpdate}
+            inputText={updateLocation}
+          />
         </View>
         <View style={styles.profileSection}>
           <Text style={styles.userPlaceHolder}>Birthday</Text>
@@ -91,6 +115,8 @@ function EditProfile(props) {
             name='birthday'
             placeholder='Birthday'
             placeholderTextColor='#A8A39F'
+            onChangeText={handleBirthdayUpdate}
+            inputText={updateBirthday}
           />
         </View>
       </View>

@@ -31,7 +31,7 @@ function SignUp(props) {
   };
 
   const goToSignIn = () => {
-    history.push(`/signup`);
+    history.push(`/`);
   };
 
   const handleRegisterSubmit = () => {

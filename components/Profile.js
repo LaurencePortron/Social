@@ -73,7 +73,7 @@ function Profile(props) {
         </View>
         <Text style={styles.userName}>{getUserProfileInfo.data.userName}</Text>
       </View>
-      {isOpen ? <UploadImageModal /> : null}
+      {isOpen ? <UploadImageModal profileId={profileId} /> : null}
 
       {profileId !== userId ? (
         <View style={styles.profileOptions}>
@@ -110,7 +110,11 @@ function Profile(props) {
       <View style={styles.profileInfoContainer}>
         <View style={styles.profileInfoSection}>
           <Feather name='map-pin' size={24} color='black' />
-          <Text style={styles.infoPlaceholder}>Lives in </Text>
+          <Text style={styles.infoPlaceholder}>Lives in</Text>
+          <Text style={styles.infoPlaceholderData}>
+            {' '}
+            {getUserProfileInfo.data.location}
+          </Text>
         </View>
         <View style={styles.profileInfoSection}>
           <Feather name='clock' size={24} color='black' />
@@ -120,6 +124,10 @@ function Profile(props) {
         <View style={styles.profileInfoSection}>
           <Feather name='gift' size={24} color='black' />
           <Text style={styles.infoPlaceholder}>Birthday</Text>
+          <Text style={styles.infoPlaceholderData}>
+            {' '}
+            {getUserProfileInfo.data.birthday}
+          </Text>
         </View>
       </View>
       <Wall profileId={profileId} />
