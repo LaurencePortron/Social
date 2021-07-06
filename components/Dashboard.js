@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ScrollView, View, Text, Image, StyleSheet } from 'react-native';
-import { LogOut } from './LogOut';
 import { Header } from './Header';
 import { CustomModal } from './CustomModal';
 import { Wall } from './Wall';
 import Avatar from './avatar.png';
 import firebase from 'firebase/app';
+import { Footer } from './Footer';
 
 function Dashboard(props) {
   const user = firebase.auth().currentUser;
@@ -24,7 +24,7 @@ function Dashboard(props) {
       <Header />
       <CustomModal placeholder={placeholder} />
       <Wall profileId={profileId} />
-      <LogOut />
+      <Footer profileId={profileId} />
     </ScrollView>
   );
 }
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
-
   postText: { color: '#A8A39F', fontSize: 18 },
 });
 

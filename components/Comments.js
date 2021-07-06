@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { useFirestoreCollection } from './hooks';
 import firebase from 'firebase/app';
 import Avatar from './avatar.png';

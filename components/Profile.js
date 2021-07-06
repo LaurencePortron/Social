@@ -15,6 +15,7 @@ import { useHistory } from 'react-router-native';
 import { Feather } from '@expo/vector-icons';
 import { Wall } from './Wall';
 import { UploadImageModal } from './UploadImageModal';
+import { Footer } from './Footer';
 
 function Profile(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -162,6 +163,7 @@ function Profile(props) {
         </View>
       </View>
       <Wall profileId={profileId} />
+      <Footer />
     </ScrollView>
   );
 }

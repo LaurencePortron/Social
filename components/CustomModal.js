@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-} from 'react-native';
+import { View, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { AddPost } from './AddPost';
-import { Feather } from '@expo/vector-icons';
-import { EditProfile } from './EditProfile';
 
 function CustomModal({ placeholder }) {
   const [modalVisible, setModalVisible] = useState(false);

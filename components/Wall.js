@@ -50,10 +50,6 @@ function Wall({ profileId }) {
     history.push(`/post/${postId}`);
   };
 
-  // const fetchComments = useFirestoreCollection(
-  //   db.collection('posts').doc(postId).collection('comments')[postId]
-  // );
-
   return (
     <View style={styles.postContainer}>
       {fetchPosts.map((post) => {
