@@ -13,8 +13,11 @@ import { useFirestoreDocument } from './hooks';
 import { useHistory } from 'react-router-native';
 import { CustomModal } from './CustomModal';
 
-function AddPost({ setModalVisible, modalVisible }) {
+function AddPost(props) {
   const [post, setPost] = useState('');
+  const [feeling, setFeeling] = useState('');
+  const [emojiSelected, setEmojiSelected] = useState(false);
+
   const [uploadOpen, setUploadOpen] = useState(false);
   const history = useHistory();
 
@@ -35,13 +38,20 @@ function AddPost({ setModalVisible, modalVisible }) {
     return null;
   }
 
+  // const addFeeling = (emoji) => {
+  //   setFeeling(emoji);
+  // };
+
+  console.log(feeling);
+
   const addPostToWall = () => {
     db.collection('posts').add({
       post: post,
       userId: userId,
       created: firebase.firestore.Timestamp.fromDate(new Date()),
+      feeling: feeling,
     });
-    setModalVisible(false);
+    history.push(`/dashboard`);
   };
 
   const backToWall = () => {
@@ -75,6 +85,29 @@ function AddPost({ setModalVisible, modalVisible }) {
           {getCurrentLoggedUser.data.userName}
         </Text>
       </View>
+      {feeling === 'is feeling happy &#128578;' ? (
+        <Text style={styles.emojis}> is feeling happy &#128578;</Text>
+      ) : null}
+      {feeling === 'is feeling loved &#128525;' ? (
+        <Text style={styles.emojis}> is feeling loved &#128525;</Text>
+      ) : null}
+
+      {feeling === 'is feeling sad &#128532;' ? (
+        <Text style={styles.emojis}> is feeling loved &#128532;</Text>
+      ) : null}
+
+      {feeling === 'is feeling excited &#129321;' ? (
+        <Text style={styles.emojis}> is feeling excited &#129321;</Text>
+      ) : null}
+
+      {feeling === 'is feeling crazy &#129322;' ? (
+        <Text style={styles.emojis}> is feeling crazy &#129322;</Text>
+      ) : null}
+
+      {feeling === 'is feeling thoughtful &#129488;' ? (
+        <Text style={styles.emojis}> is feeling thoughtful &#129488;</Text>
+      ) : null}
+
       <TextInput
         style={styles.textInput}
         textContentType='emailAddress'
@@ -92,7 +125,12 @@ function AddPost({ setModalVisible, modalVisible }) {
             <Text style={styles.toolText}>Photo</Text>
           </View>
         </TouchableOpacity>
-        <CustomModal placeholder={placeholder} />
+        <CustomModal
+          placeholder={placeholder}
+          addAFeeling={(emoji) => setFeeling(emoji)}
+          emojiSelected={emojiSelected}
+          setEmojiSelected={setEmojiSelected}
+        />
         <View style={styles.toolsSection}>
           <Feather name='tag' size={25} color='black' />
           <Text style={styles.toolText}>Tag people</Text>
@@ -118,13 +156,16 @@ const styles = StyleSheet.create({
   },
   headerTitle: { fontWeight: 'bold', fontSize: 18 },
   postButton: { fontWeight: 'bold', fontSize: 18, color: '#A8A39F' },
-  userName: { fontSize: 18, fontWeight: 'bold' },
-  // profileImage:{width:300},
+  userName: { fontSize: 20, fontWeight: 'bold', marginLeft: 10 },
+  emojis: { marginLeft: 20, marginTop: 20, fontSize: 18 },
+  profileImage: { width: 50, height: 50, borderRadius: 50 },
   user: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 20,
   },
-  textInput: { color: 'black', fontSize: 18, marginLeft: 10, marginTop: 22 },
+  textInput: { color: 'black', fontSize: 18, marginLeft: 20, marginTop: 22 },
   toolsContainer: {
     marginTop: 350,
     bottom: 0,

@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { CustomSearchBar } from './CustomSearchBar';
 
-function Header(props) {
+function DashboardHeader(props) {
   const [searchIsOpen, setSearchIsOpen] = useState(false);
   return (
     <View style={styles.headerContainer}>
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   bell: { marginRight: 20 },
 });
 
-export { Header };
+export { DashboardHeader };

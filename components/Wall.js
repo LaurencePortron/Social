@@ -64,7 +64,43 @@ function Wall({ profileId }) {
                   />
                 </TouchableOpacity>
                 <View style={styles.detailsContainer}>
-                  <Text style={styles.userName}>{getUserName}</Text>
+                  <View style={styles.userfeelings}>
+                    <Text style={styles.userName}>{getUserName}</Text>
+                    {post.data.feeling === 'is feeling happy &#128578;' ? (
+                      <Text style={styles.emojis}>
+                        is feeling happy &#128578;
+                      </Text>
+                    ) : null}
+                    {post.data.feeling === 'is feeling loved &#128525;' ? (
+                      <Text style={styles.emojis}>
+                        is feeling loved &#128525;
+                      </Text>
+                    ) : null}
+
+                    {post.data.feeling === 'is feeling sad &#128532;' ? (
+                      <Text style={styles.emojis}>
+                        is feeling loved &#128532;
+                      </Text>
+                    ) : null}
+
+                    {post.data.feeling === 'is feeling excited &#129321;' ? (
+                      <Text style={styles.emojis}>
+                        is feeling excited &#129321;
+                      </Text>
+                    ) : null}
+
+                    {post.data.feeling === 'is feeling crazy &#129322;' ? (
+                      <Text style={styles.emojis}>
+                        is feeling crazy &#129322;
+                      </Text>
+                    ) : null}
+
+                    {post.data.feeling === 'is feeling thoughtful &#129488;' ? (
+                      <Text style={styles.emojis}>
+                        is feeling thoughtful &#129488;
+                      </Text>
+                    ) : null}
+                  </View>
                   <Text style={styles.date}>
                     {moment(post.data.created.toDate()).format('MMM Do')}
                   </Text>
@@ -136,14 +172,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   avatarImage: { width: 40, height: 40 },
-  userName: { fontWeight: 'bold' },
+  userName: { fontWeight: 'bold', marginRight: 10, fontSize: 18 },
+  emojis: { fontSize: 18 },
   date: { color: '#A8A39F' },
   detailsContainer: {
     display: 'flex',
     flexDirection: 'column',
     marginLeft: 10,
   },
-  post: { fontSize: 18 },
+  userfeelings: { display: 'flex', flexDirection: 'row', alignItems: 'center' },
+  post: { fontSize: 22 },
   reactionData: {
     display: 'flex',
     flexDirection: 'row',

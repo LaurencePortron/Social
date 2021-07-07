@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { Header } from './Header';
+import { DashboardHeader } from './DashboardHeader';
 import { CustomModal } from './CustomModal';
 import { Wall } from './Wall';
 import Avatar from './avatar.png';
@@ -27,7 +27,7 @@ function Dashboard(props) {
 
   return (
     <ScrollView>
-      <Header />
+      <DashboardHeader />
       <TouchableOpacity onPress={goToAddPost}>
         <View style={styles.mainSection}>
           <Image source={Avatar} style={styles.avatarImage} />

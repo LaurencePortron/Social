@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { View, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 import { FeelingsActivities } from './FeelingsActivities';
 
-function CustomModal({ placeholder }) {
+function CustomModal({
+  placeholder,
+  addAFeeling,
+  emojiSelected,
+  setEmojiSelected,
+}) {
   const [modalVisible, setModalVisible] = useState(false);
   return (
-    <View style={styles.mainContainer}>
+    <View>
       <TouchableOpacity
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}
@@ -27,6 +32,9 @@ function CustomModal({ placeholder }) {
               <FeelingsActivities
                 setModalVisible={setModalVisible}
                 modalVisible={modalVisible}
+                addAFeeling={addAFeeling}
+                emojiSelected={emojiSelected}
+                setEmojiSelected={setEmojiSelected}
               />
             </View>
           </View>
