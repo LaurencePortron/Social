@@ -19,4 +19,4 @@ And using Cloud functions for the first time!! :) (essentially for Algolia for n
 
 ## Video
 
-![caption](social.MP4)
+![screenshot](social.MP4)
