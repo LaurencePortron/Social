@@ -110,8 +110,6 @@ function AddPost(props) {
         <CustomModal
           placeholder={placeholder}
           addAFeeling={(emoji) => setFeeling(emoji)}
-          emojiSelected={emojiSelected}
-          setEmojiSelected={setEmojiSelected}
         />
         <View style={styles.toolsSection}>
           <Feather name='tag' size={25} color='black' />
@@ -149,7 +147,7 @@ const styles = StyleSheet.create({
   },
   textInput: { color: 'black', fontSize: 18, marginLeft: 20, marginTop: 22 },
   toolsContainer: {
-    marginTop: 350,
+    marginTop: 320,
     bottom: 0,
     backgroundColor: '#E8E8E8',
     padding: 10,

@@ -2,13 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-function FeelingsActivities({
-  setModalVisible,
-  modalVisible,
-  addAFeeling,
-  emojiSelected,
-  setEmojiSelected,
-}) {
+function FeelingsActivities({ setModalVisible, modalVisible, addAFeeling }) {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>

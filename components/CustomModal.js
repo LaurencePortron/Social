@@ -33,8 +33,6 @@ function CustomModal({
                 setModalVisible={setModalVisible}
                 modalVisible={modalVisible}
                 addAFeeling={addAFeeling}
-                emojiSelected={emojiSelected}
-                setEmojiSelected={setEmojiSelected}
               />
             </View>
           </View>
