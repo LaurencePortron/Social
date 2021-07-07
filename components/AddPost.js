@@ -92,11 +92,9 @@ function AddPost(props) {
 
       <TextInput
         style={styles.textInput}
-        textContentType='emailAddress'
-        name='email'
+        name='post'
         placeholder='Whats on your mind?'
         placeholderTextColor='#A8A39F'
-        required
         inputText={post}
         onChangeText={handlePost}
       />
@@ -138,7 +136,7 @@ const styles = StyleSheet.create({
   postButton: { fontWeight: 'bold', fontSize: 18, color: '#A8A39F' },
   userName: { fontSize: 20, fontWeight: 'bold', marginLeft: 10 },
   emojis: { marginLeft: 20, marginTop: 20, fontSize: 18 },
-  profileImage: { width: 50, height: 50, borderRadius: 50 },
+  profileImage: { width: 40, height: 40, borderRadius: 50 },
   user: {
     display: 'flex',
     flexDirection: 'row',

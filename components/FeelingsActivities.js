@@ -77,7 +77,10 @@ function FeelingsActivities({ setModalVisible, modalVisible, addAFeeling }) {
   );
 }
 const styles = StyleSheet.create({
-  mainContainer: { width: '100%', backgroundColor: 'white' },
+  mainContainer: {
+    width: '100%',
+    backgroundColor: 'white',
+  },
 
   header: {
     display: 'flex',
@@ -96,10 +99,11 @@ const styles = StyleSheet.create({
   feelingsTable: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'center',
   },
   emojis: {
-    padding: 10,
-    fontSize: 30,
+    padding: 20,
+    fontSize: 18,
     borderWidth: 1,
     borderColor: '#ECE6E0',
   },

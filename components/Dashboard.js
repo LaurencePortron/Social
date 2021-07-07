@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { DashboardHeader } from './DashboardHeader';
-import { CustomModal } from './CustomModal';
+import { useFirestoreDocument } from './hooks';
 import { Wall } from './Wall';
 import Avatar from './avatar.png';
 import firebase from 'firebase/app';
@@ -21,6 +21,15 @@ function Dashboard(props) {
   const db = firebase.firestore();
   const history = useHistory();
 
+  const fetchAccounts = useFirestoreDocument(
+    db.collection('accounts').doc(profileId),
+    [profileId]
+  );
+
+  if (!fetchAccounts) {
+    return null;
+  }
+
   const goToAddPost = () => {
     history.push(`/addPost`);
   };
@@ -30,7 +39,10 @@ function Dashboard(props) {
       <DashboardHeader />
       <TouchableOpacity onPress={goToAddPost}>
         <View style={styles.mainSection}>
-          <Image source={Avatar} style={styles.avatarImage} />
+          <Image
+            source={{ uri: fetchAccounts.data.profilePicture }}
+            style={styles.avatarImage}
+          />
           <Text style={styles.postText}>Whats on your mind..</Text>
         </View>
       </TouchableOpacity>
@@ -46,8 +58,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
+    backgroundColor: 'white',
+    padding: 20,
   },
   postText: { color: '#A8A39F', fontSize: 18 },
+  avatarImage: { width: 40, height: 40, borderRadius: 50, marginRight: 10 },
 });
 
 export { Dashboard };

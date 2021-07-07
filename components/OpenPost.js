@@ -79,7 +79,7 @@ function OpenPost(props) {
               <Image source={Avatar} style={styles.avatarImage} />
             </TouchableOpacity>
             <View style={styles.detailsContainer}>
-              <Text style={styles.userName}>{userId}</Text>
+              <Text style={styles.userName}>Lauren</Text>
               <Text style={styles.date}>
                 {moment(fetchPost.data.created.toDate()).format('MMM Do')}
               </Text>
@@ -113,9 +113,9 @@ function OpenPost(props) {
         <View style={styles.reactionData}>
           <View style={styles.reactionSection}>
             {fetchPost.data.isLiked ? (
-              <Text style={styles.reactionText}>1 love</Text>
+              <Text style={styles.reactionText}>1 like</Text>
             ) : (
-              <Text style={styles.reactionText}>0 love</Text>
+              <Text style={styles.reactionText}>0 like</Text>
             )}
           </View>
           <TouchableOpacity>

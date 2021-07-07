@@ -30,6 +30,10 @@ function Wall({ profileId }) {
     return null;
   }
 
+  if (!fetchAccounts) {
+    return null;
+  }
+
   const goToProfile = (userId) => {
     history.push(`/profile/${userId}`);
   };
@@ -80,9 +84,9 @@ function Wall({ profileId }) {
               <View style={styles.reactionData}>
                 <View style={styles.reactionSection}>
                   {post.data.isLiked ? (
-                    <Text style={styles.reactionText}>1 love</Text>
+                    <Text style={styles.reactionText}>1 like</Text>
                   ) : (
-                    <Text style={styles.reactionText}>0 love</Text>
+                    <Text style={styles.reactionText}>0 like</Text>
                   )}
                 </View>
                 <TouchableOpacity onPress={() => openPost(post.id)}>
@@ -139,7 +143,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  avatarImage: { width: 40, height: 40 },
+  avatarImage: { width: 40, height: 40, borderRadius: 50 },
   userName: { fontWeight: 'bold', marginRight: 10, fontSize: 18 },
   emojis: { fontSize: 18 },
   date: { color: '#A8A39F' },

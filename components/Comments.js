@@ -34,10 +34,10 @@ function Comments({ postId }) {
             <Image source={Avatar} style={styles.avatarImage} />
             <View>
               <View style={styles.comment}>
-                <Text style={styles.userName}>{getUserName}</Text>
+                <Text style={styles.userName}>Pete</Text>
                 <Text>{comment.data.postComment}</Text>
               </View>
-              <Text>
+              <Text style={styles.date}>
                 {moment(comment.data.created.toDate()).format('MMM Do')}
               </Text>
             </View>
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   comment: {
-    backgroundColor: '#D5CFCC',
-    margin: 10,
+    backgroundColor: '#F6F6F6',
+    marginTop: 10,
     maxWidth: 600,
     maxHeight: 100,
     padding: 10,
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
+  date: { fontSize: 13, marginTop: 2 },
 });
 
 export { Comments };

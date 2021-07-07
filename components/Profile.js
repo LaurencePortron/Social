@@ -118,7 +118,7 @@ function Profile(props) {
           <TouchableOpacity>
             <View style={styles.editProfileButton}>
               <Feather name='info' size={24} color='black' />
-              <Text style={styles.editProfilePlaceholder}>About Samy</Text>
+              <Text style={styles.editProfilePlaceholder}>About Wilson</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8E8E8',
     padding: 10,
     borderRadius: 10,
-    width: 150,
+    width: 165,
     marginBottom: 10,
     marginTop: 10,
     marginLeft: 20,
