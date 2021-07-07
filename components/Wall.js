@@ -5,6 +5,7 @@ import { useFirestoreCollection, useFirestoreDocument } from './hooks';
 import { Feather } from '@expo/vector-icons';
 import { useHistory } from 'react-router-native';
 import moment from 'moment';
+import { Feelings } from './Feelings';
 
 function Wall({ profileId }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -66,40 +67,7 @@ function Wall({ profileId }) {
                 <View style={styles.detailsContainer}>
                   <View style={styles.userfeelings}>
                     <Text style={styles.userName}>{getUserName}</Text>
-                    {post.data.feeling === 'is feeling happy &#128578;' ? (
-                      <Text style={styles.emojis}>
-                        is feeling happy &#128578;
-                      </Text>
-                    ) : null}
-                    {post.data.feeling === 'is feeling loved &#128525;' ? (
-                      <Text style={styles.emojis}>
-                        is feeling loved &#128525;
-                      </Text>
-                    ) : null}
-
-                    {post.data.feeling === 'is feeling sad &#128532;' ? (
-                      <Text style={styles.emojis}>
-                        is feeling loved &#128532;
-                      </Text>
-                    ) : null}
-
-                    {post.data.feeling === 'is feeling excited &#129321;' ? (
-                      <Text style={styles.emojis}>
-                        is feeling excited &#129321;
-                      </Text>
-                    ) : null}
-
-                    {post.data.feeling === 'is feeling crazy &#129322;' ? (
-                      <Text style={styles.emojis}>
-                        is feeling crazy &#129322;
-                      </Text>
-                    ) : null}
-
-                    {post.data.feeling === 'is feeling thoughtful &#129488;' ? (
-                      <Text style={styles.emojis}>
-                        is feeling thoughtful &#129488;
-                      </Text>
-                    ) : null}
+                    <Feelings selectedFeeling={post.data.feeling} />
                   </View>
                   <Text style={styles.date}>
                     {moment(post.data.created.toDate()).format('MMM Do')}

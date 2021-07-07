@@ -12,6 +12,7 @@ import firebase from 'firebase/app';
 import { useFirestoreDocument } from './hooks';
 import { useHistory } from 'react-router-native';
 import { CustomModal } from './CustomModal';
+import { Feelings } from './Feelings';
 
 function AddPost(props) {
   const [post, setPost] = useState('');
@@ -85,28 +86,9 @@ function AddPost(props) {
           {getCurrentLoggedUser.data.userName}
         </Text>
       </View>
-      {feeling === 'is feeling happy &#128578;' ? (
-        <Text style={styles.emojis}> is feeling happy &#128578;</Text>
-      ) : null}
-      {feeling === 'is feeling loved &#128525;' ? (
-        <Text style={styles.emojis}> is feeling loved &#128525;</Text>
-      ) : null}
-
-      {feeling === 'is feeling sad &#128532;' ? (
-        <Text style={styles.emojis}> is feeling loved &#128532;</Text>
-      ) : null}
-
-      {feeling === 'is feeling excited &#129321;' ? (
-        <Text style={styles.emojis}> is feeling excited &#129321;</Text>
-      ) : null}
-
-      {feeling === 'is feeling crazy &#129322;' ? (
-        <Text style={styles.emojis}> is feeling crazy &#129322;</Text>
-      ) : null}
-
-      {feeling === 'is feeling thoughtful &#129488;' ? (
-        <Text style={styles.emojis}> is feeling thoughtful &#129488;</Text>
-      ) : null}
+      <Text style={styles.emojis}>
+        <Feelings selectedFeeling={feeling} />
+      </Text>
 
       <TextInput
         style={styles.textInput}
