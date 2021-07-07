@@ -15,8 +15,6 @@ function UploadPostImage({ postId }) {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       const downloadURL = await uploadImage(result.uri);
       db.collection('posts').doc(postId).update({

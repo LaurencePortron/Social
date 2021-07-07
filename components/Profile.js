@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase/app';
-import { useFirestoreDocument } from './hooks';
+import { useFirestoreCollection, useFirestoreDocument } from './hooks';
 import Wave from './wave.jpg';
 import { useHistory } from 'react-router-native';
 import { Feather } from '@expo/vector-icons';
@@ -35,6 +35,29 @@ function Profile(props) {
     [profileId]
   );
 
+  const fetchFriends = useFirestoreCollection(
+    db.collection('accounts').doc(userId).collection('friends'),
+    []
+  );
+
+  // const friendIdArray = fetchFriends.map((friend) => {
+  //   return { isFriend: friend.data.isFriend, id: friend.id };
+  // });
+
+  // const verifyIfRequested = friendIdArray.find(function (friend, index) {
+  //   if (friend.isFriend === false) {
+  //     return true;
+  //   }
+  // });
+
+  // if (verifyIfRequested.isFriend === undefinded) {
+  //   console.log('we are not friends');
+  // }
+
+  // if (!verifyIfRequested.isFriend) {
+  //   return null;
+  // }
+
   if (!getUserProfileInfo) {
     return null;
   }
@@ -47,24 +70,24 @@ function Profile(props) {
     history.push(`/editProfile/${userId}`);
   };
 
-  // console.log('profileId', profileId);
-  // console.log('userId', userId);
-
-  const handleFriendRequest = (profileId) => {
-    db.collection('accounts').doc(userId).collection('friends').add({
-      isFriend: false,
-      friendId: profileId,
-    });
-    setFriendRequested(true);
+  const handleFriendRequest = () => {
+    db.collection('accounts')
+      .doc(userId)
+      .collection('friends')
+      .doc(profileId)
+      .set({
+        isFriend: false,
+        created: firebase.firestore.Timestamp.fromDate(new Date()),
+      });
+    db.collection('accounts')
+      .doc(profileId)
+      .collection('friends')
+      .doc(userId)
+      .set({
+        requestAccepted: false,
+        created: firebase.firestore.Timestamp.fromDate(new Date()),
+      });
   };
-
-  // when you add a friend a collection (friends with id of the userId of the requested friend) in accounts of the user is created with the following data:
-  // 1. isFriend: true/false (false per default)
-
-  // steps:
-  // 1. click on add Friend (get user id of that friend that you want to add)
-  // 2. add a collection called friends with the friend userId, setting isFriend to false
-  // 3.
 
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>

@@ -15,8 +15,6 @@ function UploadImageModal({ profileId }) {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       const downloadURL = await uploadImage(result.uri);
       db.collection('accounts').doc(profileId).update({

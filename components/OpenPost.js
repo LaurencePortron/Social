@@ -37,8 +37,6 @@ function OpenPost(props) {
   //   return null;
   // }
 
-  console.log(fetchPost);
-
   if (!fetchPost) {
     return null;
   }
