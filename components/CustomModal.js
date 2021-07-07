@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Modal, TouchableOpacity } from 'react-native';
-import { AddPost } from './AddPost';
+import { FeelingsActivities } from './FeelingsActivities';
 
 function CustomModal({ placeholder }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -24,7 +24,7 @@ function CustomModal({ placeholder }) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <AddPost
+              <FeelingsActivities
                 setModalVisible={setModalVisible}
                 modalVisible={modalVisible}
               />
@@ -37,21 +37,16 @@ function CustomModal({ placeholder }) {
 }
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    height: 80,
-    marginTop: 10,
-    backgroundColor: 'white',
-  },
-
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
   },
+
   modalView: {
     width: '100%',
-    height: '80%',
+    height: '50%',
+    bottom: 0,
     margin: 20,
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
@@ -67,19 +62,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  editProfileButton: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E8E8E8',
-    padding: 10,
-    borderRadius: 10,
-    width: 150,
-    marginBottom: 10,
-    marginTop: 10,
-    marginLeft: 20,
-  },
-  editProfilePlaceholder: { marginLeft: 10, fontSize: 18 },
 });
 
 export { CustomModal };

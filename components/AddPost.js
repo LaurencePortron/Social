@@ -10,11 +10,13 @@ import {
 import { Feather } from '@expo/vector-icons';
 import firebase from 'firebase/app';
 import { useFirestoreDocument } from './hooks';
-import { UploadImageModal } from './UploadImageModal';
+import { useHistory } from 'react-router-native';
+import { CustomModal } from './CustomModal';
 
 function AddPost({ setModalVisible, modalVisible }) {
   const [post, setPost] = useState('');
   const [uploadOpen, setUploadOpen] = useState(false);
+  const history = useHistory();
 
   const user = firebase.auth().currentUser;
   const userId = user.uid;
@@ -42,10 +44,21 @@ function AddPost({ setModalVisible, modalVisible }) {
     setModalVisible(false);
   };
 
+  const backToWall = () => {
+    history.push(`/dashboard`);
+  };
+
+  const placeholder = (
+    <View style={styles.mainSection}>
+      <Feather name='smile' size={25} color='black' />
+      <Text style={styles.toolText}>Feeling/Activity</Text>
+    </View>
+  );
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+        <TouchableOpacity onPress={backToWall}>
           <Feather name='x' size={25} color='black' />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Create post</Text>
@@ -79,15 +92,10 @@ function AddPost({ setModalVisible, modalVisible }) {
             <Text style={styles.toolText}>Photo</Text>
           </View>
         </TouchableOpacity>
-        {uploadOpen ? <UploadImageModal postId={postId} /> : null}
-
+        <CustomModal placeholder={placeholder} />
         <View style={styles.toolsSection}>
           <Feather name='tag' size={25} color='black' />
           <Text style={styles.toolText}>Tag people</Text>
-        </View>
-        <View style={styles.toolsSection}>
-          <Feather name='smile' size={25} color='black' />
-          <Text style={styles.toolText}>Feeling/Activity</Text>
         </View>
       </View>
     </View>
@@ -95,7 +103,7 @@ function AddPost({ setModalVisible, modalVisible }) {
 }
 
 const styles = StyleSheet.create({
-  mainContainer: { width: '100%' },
+  mainContainer: { width: '100%', backgroundColor: 'white' },
   header: {
     display: 'flex',
     flexDirection: 'row',
@@ -118,7 +126,7 @@ const styles = StyleSheet.create({
   },
   textInput: { color: 'black', fontSize: 18, marginLeft: 10, marginTop: 22 },
   toolsContainer: {
-    marginTop: 270,
+    marginTop: 350,
     bottom: 0,
     backgroundColor: '#E8E8E8',
     padding: 10,
@@ -127,6 +135,12 @@ const styles = StyleSheet.create({
   },
   toolsSection: { display: 'flex', flexDirection: 'row', alignItems: 'center' },
   toolText: { marginLeft: 10, fontSize: 18, padding: 10 },
+  mainSection: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  postText: { color: '#A8A39F', fontSize: 18 },
 });
 
 export { AddPost };

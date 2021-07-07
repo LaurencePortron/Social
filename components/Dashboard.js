@@ -1,28 +1,39 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text, Image, StyleSheet } from 'react-native';
+import {
+  ScrollView,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { Header } from './Header';
 import { CustomModal } from './CustomModal';
 import { Wall } from './Wall';
 import Avatar from './avatar.png';
 import firebase from 'firebase/app';
 import { Footer } from './Footer';
+import { useHistory } from 'react-router-native';
 
 function Dashboard(props) {
   const user = firebase.auth().currentUser;
   const profileId = user.uid;
   const db = firebase.firestore();
+  const history = useHistory();
 
-  const placeholder = (
-    <View style={styles.mainSection}>
-      <Image source={Avatar} style={styles.avatarImage} />
-      <Text style={styles.postText}>Whats on your mind..</Text>
-    </View>
-  );
+  const goToAddPost = () => {
+    history.push(`/addPost`);
+  };
 
   return (
     <ScrollView>
       <Header />
-      <CustomModal placeholder={placeholder} />
+      <TouchableOpacity onPress={goToAddPost}>
+        <View style={styles.mainSection}>
+          <Image source={Avatar} style={styles.avatarImage} />
+          <Text style={styles.postText}>Whats on your mind..</Text>
+        </View>
+      </TouchableOpacity>
       <Wall profileId={profileId} />
       <Footer profileId={profileId} />
     </ScrollView>
