@@ -3,15 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useHistory } from 'react-router-native';
 import { Feather } from '@expo/vector-icons';
 
-function PageHeaders({ placeholder }) {
+function PageHeaders({ placeholder, onPressNavigation }) {
   const history = useHistory();
 
-  const backToDashboard = () => {
-    history.push(`/dashboard`);
-  };
-
   return (
-    <TouchableOpacity onPress={backToDashboard}>
+    <TouchableOpacity onPress={onPressNavigation}>
       <View style={styles.postHeader}>
         <Feather name='chevron-left' size={35} color='white' />
         <Text style={styles.requestHeaderText}>{placeholder}</Text>

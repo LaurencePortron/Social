@@ -30,8 +30,6 @@ function OpenPost(props) {
     postId,
   ]);
 
-
-
   if (!fetchPost) {
     return null;
   }
@@ -59,7 +57,10 @@ function OpenPost(props) {
   return (
     <ScrollView>
       <View style={styles.postContainer}>
-        <PageHeaders placeholder='Back to Wall' />
+        <PageHeaders
+          placeholder='Back to Wall'
+          onPressNavigation={backToDashboard}
+        />
 
         <View key={fetchPost.id} style={styles.postSection}>
           <View style={styles.userHeader}>

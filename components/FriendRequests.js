@@ -18,16 +18,15 @@ function FriendRequests(props) {
     []
   );
 
-  const getFriendsName = useFirestoreDocument(
-    db.collection('accounts').doc('nhWbXajOfRU1AEKNqAbW79OB4N32'),
-    []
-  );
-
   const friendRequests = fetchFriends.map((friend) => {
     if (friend.data.requestAccepted === false) {
       return friend.id;
     }
   });
+
+  const backToDashboard = () => {
+    history.push(`/dashboard`);
+  };
 
   const confirmFriendRequest = (request) => {
     db.collection('accounts')
@@ -51,7 +50,10 @@ function FriendRequests(props) {
 
   return (
     <View style={styles.requestContainer}>
-      <PageHeaders placeholder='Back to Wall' />
+      <PageHeaders
+        placeholder='Back to Wall'
+        onPressNavigation={backToDashboard}
+      />
       <View>
         <Text style={styles.requestTitle}>Friend Requests</Text>
         {friendRequests.map((request) => {

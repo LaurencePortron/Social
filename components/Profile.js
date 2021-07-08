@@ -51,6 +51,10 @@ function Profile(props) {
     history.push(`/editProfile/${userId}`);
   };
 
+  const goToFriends = () => {
+    history.push(`/friends/${userId}`);
+  };
+
   const handleFriendRequest = () => {
     db.collection('accounts')
       .doc(userId)
@@ -142,7 +146,7 @@ function Profile(props) {
               <Text style={styles.editProfilePlaceholder}>Edit Profile</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={goToFriends}>
             <View style={styles.editProfileButton}>
               <Feather name='users' size={24} color='black' />
               <Text style={styles.editProfilePlaceholder}>Friends</Text>

@@ -5,6 +5,7 @@ import { CustomSearchBar } from './CustomSearchBar';
 import firebase from 'firebase/app';
 import { useFirestoreCollection } from './hooks';
 import { useHistory } from 'react-router-native';
+import moment from 'moment';
 
 function DashboardHeader(props) {
   const db = firebase.firestore();
@@ -20,27 +21,11 @@ function DashboardHeader(props) {
     []
   );
 
-  const friendRequestId = seeFriends.map((friend) => {
-    if (friend.data.requestAccepted === false) {
-      return friend.id;
-    }
-  });
-
-  console.log(seeFriends);
-
   const goToFriendRequests = () => {
     history.push(`/friendRequests/${userId}`);
   };
 
-  const notif = (
-    <TouchableOpacity onPress={goToFriendRequests}>
-      <View style={styles.newNotif}>
-        <Text style={styles.userName}>Username</Text>
-        <Text>would like to add you as a friend</Text>
-        <View style={styles.circle}></View>
-      </View>
-    </TouchableOpacity>
-  );
+  console.log(seeFriends);
 
   return (
     <View style={styles.headerContainer}>
@@ -60,24 +45,25 @@ function DashboardHeader(props) {
             <View style={styles.notificationHeader}>
               <Text style={styles.notificationHeaderText}>Notifications</Text>
             </View>
-            <View style={styles.notificationBody}>
-              <TouchableOpacity onPress={goToFriendRequests}>
-                <View style={styles.newNotif}>
-                  <Text style={styles.userName}>Username</Text>
-                  <Text>would like to add you as a friend</Text>
-                  <View style={styles.circle}></View>
-                </View>
-              </TouchableOpacity>
-            </View>
-            {/* <View style={styles.notificationBody}>
-              <TouchableOpacity onPress={goToFriendRequests}>
-                <View style={styles.newNotif}>
-                  <Text style={styles.userName}>{getUserName}</Text>
-                  <Text>would like to add you as a friend</Text>
-                  <View style={styles.circle}></View>
-                </View>
-              </TouchableOpacity>
-            </View> */}
+            {seeFriends.map((friend) => {
+              if (friend.data.requestAccepted === false) {
+                return (
+                  <View style={styles.notificationBody}>
+                    <TouchableOpacity onPress={goToFriendRequests}>
+                      <View style={styles.newNotif}>
+                        <Text style={styles.userName}>{friend.id}</Text>
+                        <Text>would like to add you as a friend</Text>
+                        <Text style={styles.date}>
+                          {moment(friend.data.created.toDate()).format(
+                            'MMM Do'
+                          )}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }
+            })}
           </View>
         ) : null}
       </View>
@@ -141,7 +127,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
   },
   userName: { fontWeight: 'bold', marginRight: 5 },
-  newNotif: { display: 'flex', flexDirection: 'row', alignItems: 'center' },
+  newNotif: { display: 'flex', flexDirection: 'column', alignItems: 'center' },
   circle: {
     backgroundColor: '#A2D8EB',
     width: 7,
