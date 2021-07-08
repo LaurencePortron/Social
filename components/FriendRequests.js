@@ -23,27 +23,11 @@ function FriendRequests(props) {
     []
   );
 
-  // console.log(getFriendsName);
-
-  // users that made a friend request
-
   const friendRequests = fetchFriends.map((friend) => {
     if (friend.data.requestAccepted === false) {
       return friend.id;
     }
   });
-
-  // console.log('friendRequests', friendRequests);
-
-  // friends you requested to add
-
-  // const requestedFriends = fetchFriends.map((friend) => {
-  //   if (friend.data.isFriend === false) {
-  //     return friend.id;
-  //   }
-  // });
-
-  // console.log('requestedFriends', requestedFriends);
 
   const confirmFriendRequest = (request) => {
     db.collection('accounts')

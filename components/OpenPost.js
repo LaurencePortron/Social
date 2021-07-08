@@ -30,13 +30,7 @@ function OpenPost(props) {
     postId,
   ]);
 
-  // const fetchComments = useFirestoreCollection(
-  //   db.collection('posts').doc(postId).collection('comments')[postId]
-  // );
 
-  // if (!fetchComments) {
-  //   return null;
-  // }
 
   if (!fetchPost) {
     return null;

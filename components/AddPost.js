@@ -39,11 +39,6 @@ function AddPost(props) {
     return null;
   }
 
-  // const addFeeling = (emoji) => {
-  //   setFeeling(emoji);
-  // };
-
-
   const addPostToWall = () => {
     db.collection('posts').add({
       post: post,

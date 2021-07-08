@@ -39,24 +39,6 @@ function Profile(props) {
     []
   );
 
-  // const friendIdArray = fetchFriends.map((friend) => {
-  //   return { isFriend: friend.data.isFriend, id: friend.id };
-  // });
-
-  // const verifyIfRequested = friendIdArray.find(function (friend, index) {
-  //   if (friend.isFriend === false) {
-  //     return true;
-  //   }
-  // });
-
-  // if (verifyIfRequested.isFriend === undefinded) {
-  //   console.log('we are not friends');
-  // }
-
-  // if (!verifyIfRequested.isFriend) {
-  //   return null;
-  // }
-
   if (!getUserProfileInfo) {
     return null;
   }
