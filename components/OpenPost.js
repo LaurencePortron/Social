@@ -15,6 +15,7 @@ import { useHistory } from 'react-router-native';
 import { Comments } from './Comments';
 import Avatar from './avatar.png';
 import moment from 'moment';
+import { PageHeaders } from './PageHeaders';
 
 function OpenPost(props) {
   const [comment, setComment] = useState('');
@@ -64,12 +65,7 @@ function OpenPost(props) {
   return (
     <ScrollView>
       <View style={styles.postContainer}>
-        <TouchableOpacity onPress={backToDashboard}>
-          <View style={styles.postHeader}>
-            <Feather name='chevron-left' size={35} color='black' />
-            <Text style={styles.postHeaderText}>Back to Wall</Text>
-          </View>
-        </TouchableOpacity>
+        <PageHeaders placeholder='Back to Wall' />
 
         <View key={fetchPost.id} style={styles.postSection}>
           <View style={styles.userHeader}>

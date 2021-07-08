@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Image,
   View,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase/app';
@@ -87,6 +86,14 @@ function Profile(props) {
         requestAccepted: false,
         created: firebase.firestore.Timestamp.fromDate(new Date()),
       });
+    db.collection('accounts')
+      .doc(userId)
+      .collection('notifications')
+      .add({
+        friends: profileId,
+        isFriend: false,
+        created: firebase.firestore.Timestamp.fromDate(new Date()),
+      });
   };
 
   return (
@@ -155,8 +162,8 @@ function Profile(props) {
           </TouchableOpacity>
           <TouchableOpacity>
             <View style={styles.editProfileButton}>
-              <Feather name='settings' size={24} color='black' />
-              <Text style={styles.editProfilePlaceholder}>Settings</Text>
+              <Feather name='users' size={24} color='black' />
+              <Text style={styles.editProfilePlaceholder}>Friends</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -271,7 +278,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8E8E8',
     padding: 10,
     borderRadius: 10,
-    width: 165,
+    width: 150,
     marginBottom: 10,
     marginTop: 10,
     marginLeft: 20,

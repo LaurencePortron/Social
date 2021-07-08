@@ -144,7 +144,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   avatarImage: { width: 40, height: 40, borderRadius: 50 },
-  userName: { fontWeight: 'bold', marginRight: 10, fontSize: 18 },
+  userName: {
+    fontWeight: 'bold',
+    marginRight: 10,
+    fontSize: 18,
+    color: '#6CA9D6',
+  },
   emojis: { fontSize: 18 },
   date: { color: '#A8A39F' },
   detailsContainer: {
@@ -160,7 +165,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderBottomColor: '#ECE6E0',
+    borderBottomColor: '#A2D8EB',
     padding: 10,
   },
   reactionSection: {

@@ -32,16 +32,16 @@ function Footer({ profileId }) {
   return (
     <View style={styles.footerContainer}>
       <TouchableOpacity onPress={goToWall}>
-        <Feather name='home' size={25} color='black' style={styles.bell} />
+        <Feather name='home' size={25} color='white' style={styles.bell} />
       </TouchableOpacity>
       <TouchableOpacity onPress={goToProfile}>
-        <Feather name='user' size={25} color='black' style={styles.bell} />
+        <Feather name='user' size={25} color='white' style={styles.bell} />
       </TouchableOpacity>
       <TouchableOpacity>
-        <Feather name='bell' size={25} color='black' style={styles.bell} />
+        <Feather name='bell' size={25} color='white' style={styles.bell} />
       </TouchableOpacity>
       <TouchableOpacity onPress={handleLogOut}>
-        <Feather name='log-out' size={25} color='black' style={styles.bell} />
+        <Feather name='log-out' size={25} color='white' style={styles.bell} />
       </TouchableOpacity>
     </View>
   );
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderBottomWidth: 1,
     borderBottomColor: '#ECE6E0',
-    backgroundColor: 'white',
+    backgroundColor: '#6CA9D6',
     width: '100%',
   },
 });
