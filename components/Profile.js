@@ -107,6 +107,13 @@ function Profile(props) {
     return null;
   }
 
+  const pendingIcon = <Feather name='clock' size={24} color='black' />;
+  const aboutIcon = <Feather name='user' size={24} color='black' />;
+  const editProfileIcon = <Feather name='edit' size={24} color='black' />;
+  const myFriendsIcon = <Feather name='users' size={24} color='black' />;
+  const friendsIcon = <Feather name='check' size={24} color='black' />;
+  const addFriendIcon = <Feather name='user-plus' size={24} color='black' />;
+
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <View style={styles.headerSection}>
@@ -139,18 +146,35 @@ function Profile(props) {
       {isOpen ? <UploadImageModal profileId={profileId} /> : null}
 
       {checkIfFriends ? (
-        <ProfileButtons firstPlaceholder='Friends' secondPlaceholder='About' />
+        <ProfileButtons
+          firstPlaceholder='Friends'
+          secondPlaceholder='About'
+          firstIcon={friendsIcon}
+          secondIcon={aboutIcon}
+        />
       ) : checkIfRequestPending ? (
-        <ProfileButtons firstPlaceholder='Pending' secondPlaceholder='About' />
+        <ProfileButtons
+          firstPlaceholder='Pending'
+          secondPlaceholder='About'
+          firstIcon={pendingIcon}
+          secondIcon={aboutIcon}
+        />
       ) : profileId === userId ? (
         <ProfileButtons
           firstPlaceholder='Edit Profile'
           secondPlaceholder='My Friends'
+          onPressNavigationFirstButton={goToEditProfile}
+          onPressNavigationSecondButton={goToFriends}
+          firstIcon={editProfileIcon}
+          secondIcon={myFriendsIcon}
         />
       ) : (
         <ProfileButtons
           firstPlaceholder='Add Friend'
           secondPlaceholder='About'
+          onPressNavigationFirstButton={handleFriendRequest}
+          firstIcon={addFriendIcon}
+          secondIcon={aboutIcon}
         />
       )}
 

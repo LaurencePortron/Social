@@ -9,49 +9,25 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-// component for own profile buttons (edit profile + Friends)
-// conditions: profileId !== userId (??)
-
-// component for random user button (Add Friend + About)
-// conditions:  if this -> const userProfile = useFirestoreCollection(
-//   db.collection('accounts').doc(userId).collection('friends').doc(profileId),
-//   []
-// );
-// userProfile === undefined || null
-
-// component for friend buttons (Friends + About)
-// conditions:  if this -> const userProfile = useFirestoreCollection(
-//   db.collection('accounts').doc(userId).collection('friends').doc(profileId),
-//   []
-// );
-// userProfile.data.requestAccepted || userProfile.data.isFriend === true
-
-// component for requested friends buttons (requested + About)
-// conditions:  if this -> const userProfile = useFirestoreCollection(
-//   db.collection('accounts').doc(userId).collection('friends').doc(profileId),
-//   []
-// );
-// userProfile.data.requestAccepted || userProfile.data.isFriend === false
-
-//var icon = (area == 1) ? icon1 : (area == 2) ? icon2 : icon0;
-
 function ProfileButtons({
   onPressNavigationSecondButton,
   onPressNavigationFirstButton,
   firstPlaceholder,
   secondPlaceholder,
+  firstIcon,
+  secondIcon,
 }) {
   return (
     <View style={styles.profileOptions}>
       <TouchableOpacity onPress={onPressNavigationFirstButton}>
         <View style={styles.editProfileButton}>
-          <Feather name='edit' size={24} color='black' />
+          {firstIcon}
           <Text style={styles.editProfilePlaceholder}>{firstPlaceholder}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={onPressNavigationSecondButton}>
         <View style={styles.editProfileButton}>
-          <Feather name='users' size={24} color='black' />
+          {secondIcon}
           <Text style={styles.editProfilePlaceholder}>{secondPlaceholder}</Text>
         </View>
       </TouchableOpacity>
@@ -79,42 +55,5 @@ const styles = StyleSheet.create({
   },
   editProfilePlaceholder: { marginLeft: 10, fontSize: 18 },
 });
-
-// TO BE DONE :
-// {
-//   !fetchFriends ? null : userId !== userId ? (
-//     <ProfileButtons
-//       onPressNavigationFirstButton={goToEditProfile}
-//       onPressNavigationSecondButton={goToFriends}
-//       firstPlaceholder='Edit Profile'
-//       secondPlaceholder='Friends'
-//     />
-//   ) : fetchFriends === undefined ? (
-//     <ProfileButtons
-//       onPressNavigationFirstButton={goToEditProfile}
-//       onPressNavigationSecondButton={goToFriends}
-//       firstPlaceholder='Add Friend'
-//       secondPlaceholder='About'
-//     />
-//   ) : (fetchFriends.data.requestAccepted !== undefined &&
-//       fetchFriends.data.isFriend !== undefined &&
-//       fetchFriends.data.requestAccepted === true) ||
-//     fetchFriends.data.isFriend === true ? (
-//     <ProfileButtons
-//       onPressNavigationFirstButton={goToEditProfile}
-//       onPressNavigationSecondButton={goToFriends}
-//       firstPlaceholder='Friends'
-//       secondPlaceholder='About'
-//     />
-//   ) : fetchFriends.data.requestAccepted ||
-//     fetchFriends.data.isFriend === false ? (
-//     <ProfileButtons
-//       onPressNavigationFirstButton={goToEditProfile}
-//       onPressNavigationSecondButton={goToFriends}
-//       firstPlaceholder='Requested'
-//       secondPlaceholder='About'
-//     />
-//   ) : null;
-// }
 
 export { ProfileButtons };

@@ -36,6 +36,8 @@ function Wall({ profileId }) {
     }
   });
 
+  // we need the profile pic && username depending on userId
+
   if (!getUserProfileInfo) {
     return null;
   }
