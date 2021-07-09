@@ -117,6 +117,7 @@ function OpenPost(props) {
         {fetchComments.map((comment) => {
           return (
             <Comments
+              key={comment.id}
               postId={postId}
               idOfUser={comment.data.user}
               commentId={comment.id}

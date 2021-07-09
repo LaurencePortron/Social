@@ -13,7 +13,7 @@ import { EditProfile } from './components/EditProfile';
 import { AddPost } from './components/AddPost';
 import { FeelingsActivities } from './components/FeelingsActivities';
 import { FriendRequests } from './components/FriendRequests';
-import { Friends } from './components/Friends';
+import { FriendsList } from './components/FriendsList';
 
 var firebaseConfig = {
   apiKey: 'AIzaSyDsxrCO7UQTovxcf-_IYc5I3yx4Q9orDAc',
@@ -60,7 +60,7 @@ export default function App() {
             component={FeelingsActivities}
           />
           <Route exact path='/friendRequests/:id/' component={FriendRequests} />
-          <Route exact path='/friends/:id/' component={Friends} />
+          <Route exact path='/friends/:id/' component={FriendsList} />
         </View>
       </NativeRouter>
     </UserContext.Provider>

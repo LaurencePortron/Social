@@ -23,6 +23,7 @@ function FriendRequests(props) {
       return friend.id;
     }
   });
+  console.log(friendRequests);
 
   const backToDashboard = () => {
     history.push(`/dashboard`);
@@ -59,7 +60,7 @@ function FriendRequests(props) {
         {friendRequests.map((request) => {
           if (request !== undefined) {
             return (
-              <View style={styles.requests}>
+              <View style={styles.requests} key={request}>
                 <Image source={Avatar} style={styles.avatarImage} />
                 <View style={styles.friendSection}>
                   <Text style={styles.request}>{request}</Text>

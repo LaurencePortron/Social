@@ -25,8 +25,6 @@ function DashboardHeader(props) {
     history.push(`/friendRequests/${userId}`);
   };
 
-  console.log(seeFriends);
-
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.social}>Social</Text>
@@ -48,7 +46,7 @@ function DashboardHeader(props) {
             {seeFriends.map((friend) => {
               if (friend.data.requestAccepted === false) {
                 return (
-                  <View style={styles.notificationBody}>
+                  <View style={styles.notificationBody} key={friend.id}>
                     <TouchableOpacity onPress={goToFriendRequests}>
                       <View style={styles.newNotif}>
                         <Text style={styles.userName}>{friend.id}</Text>

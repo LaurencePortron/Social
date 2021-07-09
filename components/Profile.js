@@ -97,7 +97,8 @@ function Profile(props) {
     db.collection('accounts')
       .doc(userId)
       .collection('notifications')
-      .add({
+      .doc(profileId)
+      .set({
         friends: profileId,
         isFriend: false,
         created: firebase.firestore.Timestamp.fromDate(new Date()),
@@ -130,10 +131,15 @@ function Profile(props) {
           </TouchableOpacity>
         </View>
         <View style={styles.profileImageSection}>
-          <Image
-            source={{ uri: getUserProfileInfo.data.profilePicture }}
-            style={styles.profileImage}
-          />
+          {getUserProfileInfo.data.profilePicture ? (
+            <Image
+              source={{ uri: getUserProfileInfo.data.profilePicture }}
+              style={styles.profileImage}
+            />
+          ) : (
+            <Image source={Avatar} style={styles.profileImage} />
+          )}
+
           {profileId !== userId ? null : (
             <View style={styles.cameraIconContainer}>
               <TouchableOpacity onPress={openUpload}>
