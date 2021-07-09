@@ -6,11 +6,10 @@ import { Feather } from '@expo/vector-icons';
 import { useHistory } from 'react-router-native';
 import moment from 'moment';
 import { Feelings } from './Feelings';
+import Avatar from './avatar.png';
 
 function Wall({ profileId }) {
   const [isLiked, setIsLiked] = useState(false);
-  const user = firebase.auth().currentUser;
-  const userId = user.uid;
   const db = firebase.firestore();
   const history = useHistory();
 
@@ -23,8 +22,19 @@ function Wall({ profileId }) {
 
   const getUserProfileInfo = useFirestoreDocument(
     db.collection('accounts').doc(profileId),
-    [profileId]
+    []
   );
+
+  const getUsersFriends = useFirestoreCollection(
+    db.collection('accounts').doc(profileId).collection('friends'),
+    []
+  );
+
+  const getFriendIds = getUsersFriends.map((friend) => {
+    if (friend.data.isFriend === true || friend.data.requestAccepted === true) {
+      return friend.id;
+    }
+  });
 
   if (!getUserProfileInfo) {
     return null;
@@ -34,8 +44,8 @@ function Wall({ profileId }) {
     return null;
   }
 
-  const goToProfile = (userId) => {
-    history.push(`/profile/${userId}`);
+  const goToProfile = (id) => {
+    history.push(`/profile/${id}`);
   };
 
   const addLikesToDb = (postId) => {
@@ -45,12 +55,6 @@ function Wall({ profileId }) {
     setIsLiked(!isLiked);
   };
 
-  const getUserName = fetchAccounts.map((username) => {
-    if (userId === username.id) {
-      return username.data.userName;
-    }
-  });
-
   const openPost = (postId) => {
     history.push(`/post/${postId}`);
   };
@@ -58,19 +62,28 @@ function Wall({ profileId }) {
   return (
     <View style={styles.postContainer}>
       {fetchPosts.map((post) => {
-        if (profileId === post.data.userId) {
+        const idOfUser = post.data.userId;
+        if (
+          profileId === post.data.userId ||
+          getFriendIds.includes(post.data.userId)
+        ) {
           return (
             <View key={post.id} style={styles.postSection}>
               <View style={styles.userHeader}>
-                <TouchableOpacity onPress={() => goToProfile(userId)}>
-                  <Image
-                    source={{ uri: getUserProfileInfo.data.profilePicture }}
-                    style={styles.avatarImage}
-                  />
-                </TouchableOpacity>
+                {getUserProfileInfo.data.profilePicture ? (
+                  <TouchableOpacity onPress={() => goToProfile(idOfUser)}>
+                    <Image
+                      source={{ uri: getUserProfileInfo.data.profilePicture }}
+                      style={styles.avatarImage}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <Image source={Avatar} style={styles.avatarImage} />
+                )}
+
                 <View style={styles.detailsContainer}>
                   <View style={styles.userfeelings}>
-                    <Text style={styles.userName}>{getUserName}</Text>
+                    <Text style={styles.userName}>{post.data.userId}</Text>
                     <Feelings selectedFeeling={post.data.feeling} />
                   </View>
                   <Text style={styles.date}>
@@ -146,7 +159,6 @@ const styles = StyleSheet.create({
   avatarImage: { width: 40, height: 40, borderRadius: 50 },
   userName: {
     fontWeight: 'bold',
-    marginRight: 10,
     fontSize: 18,
     color: '#6CA9D6',
   },

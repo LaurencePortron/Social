@@ -113,7 +113,7 @@ function AddPost(props) {
 }
 
 const styles = StyleSheet.create({
-  mainContainer: { width: '100%', backgroundColor: 'white' },
+  mainContainer: { width: '100%', backgroundColor: 'white', marginTop: 20 },
   header: {
     display: 'flex',
     flexDirection: 'row',

@@ -15,6 +15,7 @@ import { Feather } from '@expo/vector-icons';
 import { Wall } from './Wall';
 import { UploadImageModal } from './UploadImageModal';
 import { Footer } from './Footer';
+import { ProfileButtons } from './ProfileButtons';
 
 function Profile(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,10 +35,30 @@ function Profile(props) {
     [profileId]
   );
 
+  // fetch friends of the logged in user
   const fetchFriends = useFirestoreCollection(
     db.collection('accounts').doc(userId).collection('friends'),
     []
   );
+
+  const getFriendIds = fetchFriends.map((friend) => {
+    if (friend.data.isFriend === true || friend.data.requestAccepted === true) {
+      return friend.id;
+    }
+  });
+
+  const getPendingFriendIds = fetchFriends.map((friend) => {
+    if (
+      friend.data.isFriend === false ||
+      friend.data.requestAccepted === false
+    ) {
+      return friend.id;
+    }
+  });
+
+  const checkIfFriends = getFriendIds.includes(profileId);
+
+  const checkIfRequestPending = getPendingFriendIds.includes(profileId);
 
   if (!getUserProfileInfo) {
     return null;
@@ -82,6 +103,10 @@ function Profile(props) {
       });
   };
 
+  if (!fetchFriends) {
+    return null;
+  }
+
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <View style={styles.headerSection}>
@@ -93,7 +118,7 @@ function Profile(props) {
         <Image source={Wave} style={styles.coverImage} />
         <View style={styles.cameraIconCover}>
           <TouchableOpacity onPress={openUpload}>
-            <Feather name='camera' size={35} color='black' />
+            <Feather name='camera' size={35} color='#6CA9D6' />
           </TouchableOpacity>
         </View>
         <View style={styles.profileImageSection}>
@@ -104,7 +129,7 @@ function Profile(props) {
           {profileId !== userId ? null : (
             <View style={styles.cameraIconContainer}>
               <TouchableOpacity onPress={openUpload}>
-                <Feather name='camera' size={35} color='black' />
+                <Feather name='camera' size={35} color='#6CA9D6' />
               </TouchableOpacity>
             </View>
           )}
@@ -113,51 +138,25 @@ function Profile(props) {
       </View>
       {isOpen ? <UploadImageModal profileId={profileId} /> : null}
 
-      {profileId !== userId ? (
-        <View style={styles.profileOptions}>
-          {friendRequested ? (
-            <TouchableOpacity>
-              <View style={styles.addFriendButton}>
-                <Feather name='check' size={24} color='black' />
-                <Text style={styles.editProfilePlaceholder}>Requested</Text>
-              </View>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={() => handleFriendRequest(profileId)}>
-              <View style={styles.addFriendButton}>
-                <Feather name='user-plus' size={24} color='black' />
-                <Text style={styles.editProfilePlaceholder}>Add Friend</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-
-          <TouchableOpacity>
-            <View style={styles.editProfileButton}>
-              <Feather name='info' size={24} color='black' />
-              <Text style={styles.editProfilePlaceholder}>About Wilson</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+      {checkIfFriends ? (
+        <ProfileButtons firstPlaceholder='Friends' secondPlaceholder='About' />
+      ) : checkIfRequestPending ? (
+        <ProfileButtons firstPlaceholder='Pending' secondPlaceholder='About' />
+      ) : profileId === userId ? (
+        <ProfileButtons
+          firstPlaceholder='Edit Profile'
+          secondPlaceholder='My Friends'
+        />
       ) : (
-        <View style={styles.profileOptions}>
-          <TouchableOpacity onPress={() => goToEditProfile(userId)}>
-            <View style={styles.editProfileButton}>
-              <Feather name='edit' size={24} color='black' />
-              <Text style={styles.editProfilePlaceholder}>Edit Profile</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={goToFriends}>
-            <View style={styles.editProfileButton}>
-              <Feather name='users' size={24} color='black' />
-              <Text style={styles.editProfilePlaceholder}>Friends</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+        <ProfileButtons
+          firstPlaceholder='Add Friend'
+          secondPlaceholder='About'
+        />
       )}
 
       <View style={styles.profileInfoContainer}>
         <View style={styles.profileInfoSection}>
-          <Feather name='map-pin' size={24} color='black' />
+          <Feather name='map-pin' size={24} color='#6CA9D6' />
           <Text style={styles.infoPlaceholder}>Lives in</Text>
           <Text style={styles.infoPlaceholderData}>
             {' '}
@@ -165,12 +164,12 @@ function Profile(props) {
           </Text>
         </View>
         <View style={styles.profileInfoSection}>
-          <Feather name='clock' size={24} color='black' />
+          <Feather name='clock' size={24} color='#6CA9D6' />
           <Text style={styles.infoPlaceholder}>Joined </Text>
           <Text style={styles.infoPlaceholderData}> 4th July </Text>
         </View>
         <View style={styles.profileInfoSection}>
-          <Feather name='gift' size={24} color='black' />
+          <Feather name='gift' size={24} color='#6CA9D6' />
           <Text style={styles.infoPlaceholder}>Birthday</Text>
           <Text style={styles.infoPlaceholderData}>
             {' '}
