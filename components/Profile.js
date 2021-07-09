@@ -16,6 +16,7 @@ import { Wall } from './Wall';
 import { UploadImageModal } from './UploadImageModal';
 import { Footer } from './Footer';
 import { ProfileButtons } from './ProfileButtons';
+import { ProfileInfo } from './ProfileInfo';
 
 function Profile(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -178,29 +179,10 @@ function Profile(props) {
         />
       )}
 
-      <View style={styles.profileInfoContainer}>
-        <View style={styles.profileInfoSection}>
-          <Feather name='map-pin' size={24} color='#6CA9D6' />
-          <Text style={styles.infoPlaceholder}>Lives in</Text>
-          <Text style={styles.infoPlaceholderData}>
-            {' '}
-            {getUserProfileInfo.data.location}
-          </Text>
-        </View>
-        <View style={styles.profileInfoSection}>
-          <Feather name='clock' size={24} color='#6CA9D6' />
-          <Text style={styles.infoPlaceholder}>Joined </Text>
-          <Text style={styles.infoPlaceholderData}> 4th July </Text>
-        </View>
-        <View style={styles.profileInfoSection}>
-          <Feather name='gift' size={24} color='#6CA9D6' />
-          <Text style={styles.infoPlaceholder}>Birthday</Text>
-          <Text style={styles.infoPlaceholderData}>
-            {' '}
-            {getUserProfileInfo.data.birthday}
-          </Text>
-        </View>
-      </View>
+      <ProfileInfo
+        location={getUserProfileInfo.data.location}
+        birthday={getUserProfileInfo.data.birthday}
+      />
       <Wall profileId={profileId} />
       <Footer />
     </ScrollView>
@@ -305,20 +287,5 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   editProfilePlaceholder: { marginLeft: 10, fontSize: 18 },
-  profileInfoContainer: {
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ECE6E0',
-  },
-
-  profileInfoSection: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    marginLeft: 20,
-  },
-  infoPlaceholder: { marginLeft: 10, fontSize: 16, fontWeight: 'bold' },
-  infoPlaceholderData: { fontSize: 16 },
 });
 export { Profile };
