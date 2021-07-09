@@ -4,9 +4,7 @@ import firebase from 'firebase/app';
 import { useFirestoreCollection, useFirestoreDocument } from './hooks';
 import { Feather } from '@expo/vector-icons';
 import { useHistory } from 'react-router-native';
-import moment from 'moment';
-import { Feelings } from './Feelings';
-import Avatar from './avatar.png';
+import { Post } from './Post';
 
 function Wall({ profileId }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -36,8 +34,6 @@ function Wall({ profileId }) {
     }
   });
 
-  // we need the profile pic && username depending on userId
-
   if (!getUserProfileInfo) {
     return null;
   }
@@ -45,10 +41,6 @@ function Wall({ profileId }) {
   if (!fetchAccounts) {
     return null;
   }
-
-  const goToProfile = (id) => {
-    history.push(`/profile/${id}`);
-  };
 
   const addLikesToDb = (postId) => {
     db.collection('posts').doc(postId).update({
@@ -71,30 +63,12 @@ function Wall({ profileId }) {
         ) {
           return (
             <View key={post.id} style={styles.postSection}>
-              <View style={styles.userHeader}>
-                {getUserProfileInfo.data.profilePicture ? (
-                  <TouchableOpacity onPress={() => goToProfile(idOfUser)}>
-                    <Image
-                      source={{ uri: getUserProfileInfo.data.profilePicture }}
-                      style={styles.avatarImage}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <Image source={Avatar} style={styles.avatarImage} />
-                )}
-
-                <View style={styles.detailsContainer}>
-                  <View style={styles.userfeelings}>
-                    <Text style={styles.userName}>{post.data.userId}</Text>
-                    <Feelings selectedFeeling={post.data.feeling} />
-                  </View>
-                  <Text style={styles.date}>
-                    {moment(post.data.created.toDate()).format('MMM Do')}
-                  </Text>
-                </View>
-              </View>
-
-              <Text style={styles.post}>{post.data.post}</Text>
+              <Post
+                idOfUser={post.data.userId}
+                selectedFeeling={post.data.feeling}
+                postCreated={post.data.created}
+                postContent={post.data.post}
+              />
 
               <View style={styles.reactionData}>
                 <View style={styles.reactionSection}>
@@ -152,27 +126,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
   },
-  userHeader: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  avatarImage: { width: 40, height: 40, borderRadius: 50 },
-  userName: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    color: '#6CA9D6',
-  },
+
   emojis: { fontSize: 18 },
-  date: { color: '#A8A39F' },
-  detailsContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: 10,
-  },
-  userfeelings: { display: 'flex', flexDirection: 'row', alignItems: 'center' },
-  post: { fontSize: 22 },
+
   reactionData: {
     display: 'flex',
     flexDirection: 'row',
