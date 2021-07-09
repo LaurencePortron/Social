@@ -149,14 +149,14 @@ function Profile(props) {
       {checkIfFriends ? (
         <ProfileButtons
           firstPlaceholder='Friends'
-          secondPlaceholder='About'
+          secondPlaceholder={'About ' + getUserProfileInfo.data.userName}
           firstIcon={friendsIcon}
           secondIcon={aboutIcon}
         />
       ) : checkIfRequestPending ? (
         <ProfileButtons
           firstPlaceholder='Pending'
-          secondPlaceholder='About'
+          secondPlaceholder={'About ' + getUserProfileInfo.data.userName}
           firstIcon={pendingIcon}
           secondIcon={aboutIcon}
         />
@@ -172,7 +172,7 @@ function Profile(props) {
       ) : (
         <ProfileButtons
           firstPlaceholder='Add Friend'
-          secondPlaceholder='About'
+          secondPlaceholder={'About ' + getUserProfileInfo.data.userName}
           onPressNavigationFirstButton={handleFriendRequest}
           firstIcon={addFriendIcon}
           secondIcon={aboutIcon}

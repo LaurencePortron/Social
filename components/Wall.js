@@ -56,7 +56,6 @@ function Wall({ profileId }) {
   return (
     <View style={styles.postContainer}>
       {fetchPosts.map((post) => {
-        const idOfUser = post.data.userId;
         if (
           profileId === post.data.userId ||
           getFriendIds.includes(post.data.userId)

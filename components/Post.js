@@ -24,8 +24,6 @@ function Post({ idOfUser, selectedFeeling, postCreated, postContent }) {
     return null;
   }
 
-  // we need to add the Comments component here and map on it by passing props
-
   return (
     <View>
       <View style={styles.userHeader}>

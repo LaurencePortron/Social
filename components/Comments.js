@@ -1,49 +1,47 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { useFirestoreCollection } from './hooks';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { useFirestoreDocument } from './hooks';
 import firebase from 'firebase/app';
 import Avatar from './avatar.png';
 import moment from 'moment';
 
-function Comments({ postId }) {
+function Comments({ commentId, commentContent, postCreated, idOfUser }) {
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
   const userId = user.uid;
 
-  const fetchComments = useFirestoreCollection(
-    db
-      .collection('posts')
-      .doc(postId)
-      .collection('comments')
-      .orderBy('created', 'asc'),
-    [postId]
+  const fetchUser = useFirestoreDocument(
+    db.collection('accounts').doc(idOfUser),
+    []
   );
-  const fetchAccounts = useFirestoreCollection(db.collection('accounts'), []);
 
-  const getUserName = fetchAccounts.map((username) => {
-    if (userId === username.id) {
-      return username.data.userName;
-    }
-  });
+  if (!fetchUser) {
+    return null;
+  }
 
   return (
     <View style={styles.commentContainer}>
-      {fetchComments.map((comment) => {
-        return (
-          <View key={comment.id} style={styles.commentSection}>
-            <Image source={Avatar} style={styles.avatarImage} />
-            <View>
-              <View style={styles.comment}>
-                <Text style={styles.userName}>Pete</Text>
-                <Text>{comment.data.postComment}</Text>
-              </View>
-              <Text style={styles.date}>
-                {moment(comment.data.created.toDate()).format('MMM Do')}
-              </Text>
-            </View>
+      <View key={commentId} style={styles.commentSection}>
+        {fetchUser.data.profilePicture ? (
+          <TouchableOpacity>
+            <Image
+              source={{ uri: fetchUser.data.profilePicture }}
+              style={styles.avatarImage}
+            />
+          </TouchableOpacity>
+        ) : (
+          <Image source={Avatar} style={styles.avatarImage} />
+        )}
+        <View>
+          <View style={styles.comment}>
+            <Text style={styles.userName}>{fetchUser.data.userName}</Text>
+            <Text>{commentContent}</Text>
           </View>
-        );
-      })}
+          <Text style={styles.date}>
+            {moment(postCreated.toDate()).format('MMM Do')}
+          </Text>
+        </View>
+      </View>
     </View>
   );
 }
@@ -55,6 +53,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  avatarImage: {
+    marginLeft: 10,
+    marginRight: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+  },
+
   comment: {
     backgroundColor: '#F6F6F6',
     marginTop: 10,

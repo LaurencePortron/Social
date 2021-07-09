@@ -13,9 +13,8 @@ import firebase from 'firebase/app';
 import { Feather } from '@expo/vector-icons';
 import { useHistory } from 'react-router-native';
 import { Comments } from './Comments';
-import Avatar from './avatar.png';
-import moment from 'moment';
 import { PageHeaders } from './PageHeaders';
+import { Post } from './Post';
 
 function OpenPost(props) {
   const [comment, setComment] = useState('');
@@ -29,6 +28,15 @@ function OpenPost(props) {
   const fetchPost = useFirestoreDocument(db.collection('posts').doc(postId), [
     postId,
   ]);
+
+  const fetchComments = useFirestoreCollection(
+    db
+      .collection('posts')
+      .doc(postId)
+      .collection('comments')
+      .orderBy('created', 'asc'),
+    [postId]
+  );
 
   if (!fetchPost) {
     return null;
@@ -61,44 +69,37 @@ function OpenPost(props) {
           placeholder='Back to Wall'
           onPressNavigation={backToDashboard}
         />
-
-        <View key={fetchPost.id} style={styles.postSection}>
-          <View style={styles.userHeader}>
-            <TouchableOpacity onPress={() => goToProfile(userId)}>
-              <Image source={Avatar} style={styles.avatarImage} />
-            </TouchableOpacity>
-            <View style={styles.detailsContainer}>
-              <Text style={styles.userName}>Lauren</Text>
-              <Text style={styles.date}>
-                {moment(fetchPost.data.created.toDate()).format('MMM Do')}
-              </Text>
-            </View>
-          </View>
-
-          <Text style={styles.post}>{fetchPost.data.post}</Text>
-
-          <View style={styles.reactionContainer}>
-            <TouchableOpacity onPress={() => addLikesToDb(fetchPost.id)}>
-              {fetchPost.data.isLiked ? (
-                <View style={styles.reactionSection}>
-                  <Text style={styles.heartClicked}>&#x2665;</Text>
-                  <Text style={styles.reactionText}>Unlove</Text>
-                </View>
-              ) : (
-                <View style={styles.reactionSection}>
-                  <Text style={styles.heart}>&#x2661;</Text>
-                  <Text style={styles.reactionText}>Love</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.reactionSection}>
-                <Feather name='message-square' size={25} color='grey' />
-                <Text style={styles.reactionText}>Comment</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+        <View style={{ marginTop: 10, marginLeft: 10 }}>
+          <Post
+            idOfUser={fetchPost.data.userId}
+            selectedFeeling={fetchPost.data.feeling}
+            postCreated={fetchPost.data.created}
+            postContent={fetchPost.data.post}
+          />
         </View>
+
+        <View style={styles.reactionContainer}>
+          <TouchableOpacity onPress={() => addLikesToDb(fetchPost.id)}>
+            {fetchPost.data.isLiked ? (
+              <View style={styles.reactionSection}>
+                <Text style={styles.heartClicked}>&#x2665;</Text>
+                <Text style={styles.reactionText}>Unlove</Text>
+              </View>
+            ) : (
+              <View style={styles.reactionSection}>
+                <Text style={styles.heart}>&#x2661;</Text>
+                <Text style={styles.reactionText}>Love</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.reactionSection}>
+              <Feather name='message-square' size={25} color='grey' />
+              <Text style={styles.reactionText}>Comment</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.reactionData}>
           <View style={styles.reactionSection}>
             {fetchPost.data.isLiked ? (
@@ -113,7 +114,17 @@ function OpenPost(props) {
             </View>
           </TouchableOpacity>
         </View>
-        <Comments postId={postId} />
+        {fetchComments.map((comment) => {
+          return (
+            <Comments
+              postId={postId}
+              idOfUser={comment.data.user}
+              commentId={comment.id}
+              commentContent={comment.data.postComment}
+              postCreated={comment.data.created}
+            />
+          );
+        })}
       </View>
       <View
         style={{
