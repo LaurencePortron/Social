@@ -17,6 +17,7 @@ import { UploadImageModal } from './UploadImageModal';
 import { Footer } from './Footer';
 import { ProfileButtons } from './ProfileButtons';
 import { ProfileInfo } from './ProfileInfo';
+import Avatar from './avatar.png';
 
 function Profile(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -95,13 +96,14 @@ function Profile(props) {
         created: firebase.firestore.Timestamp.fromDate(new Date()),
       });
     db.collection('accounts')
-      .doc(userId)
-      .collection('notifications')
       .doc(profileId)
+      .collection('notifications')
+      .doc(userId)
       .set({
-        friends: profileId,
+        friends: userId,
         isFriend: false,
         created: firebase.firestore.Timestamp.fromDate(new Date()),
+        markedAsRead: false,
       });
   };
 

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useHistory } from 'react-router-native';
-import { Feather } from '@expo/vector-icons';
 import { PageHeaders } from './PageHeaders';
-import { useFirestoreDocument, useFirestoreCollection } from './hooks';
+import { useFirestoreCollection } from './hooks';
 import firebase from 'firebase/app';
-import Avatar from './avatar.png';
+import { Friend } from './Friend';
+import { Request } from './Request';
 
 function FriendRequests(props) {
   const history = useHistory();
@@ -18,34 +18,19 @@ function FriendRequests(props) {
     []
   );
 
-  const friendRequests = fetchFriends.map((friend) => {
+  const friendRequestsPending = fetchFriends.map((friend) => {
     if (friend.data.requestAccepted === false) {
       return friend.id;
     }
   });
-  console.log(friendRequests);
+
+  const friendRequestAccepted = fetchFriends.map((friend) => {
+    if (friend.data.requestAccepted === true || friend.data.isFriend === true) {
+      return friend;
+    }
+  });
 
   const backToDashboard = () => {
-    history.push(`/dashboard`);
-  };
-
-  const confirmFriendRequest = (request) => {
-    db.collection('accounts')
-      .doc(request)
-      .collection('friends')
-      .doc(userId)
-      .update({
-        isFriend: true,
-        friendsSince: firebase.firestore.Timestamp.fromDate(new Date()),
-      });
-    db.collection('accounts')
-      .doc(userId)
-      .collection('friends')
-      .doc(request)
-      .update({
-        requestAccepted: true,
-        friendsSince: firebase.firestore.Timestamp.fromDate(new Date()),
-      });
     history.push(`/dashboard`);
   };
 
@@ -57,29 +42,16 @@ function FriendRequests(props) {
       />
       <View>
         <Text style={styles.requestTitle}>Friend Requests</Text>
-        {friendRequests.map((request) => {
-          if (request !== undefined) {
+        {friendRequestsPending.map((friendId) => {
+          if (friendId !== undefined) {
+            console.log(friendId);
+            return <Request friendId={friendId} userId={userId} />;
+          }
+        })}
+        {friendRequestAccepted.map((friend) => {
+          if (friend !== undefined) {
             return (
-              <View style={styles.requests} key={request}>
-                <Image source={Avatar} style={styles.avatarImage} />
-                <View style={styles.friendSection}>
-                  <Text style={styles.request}>{request}</Text>
-                  <View style={styles.buttons}>
-                    <TouchableOpacity
-                      onPress={() => confirmFriendRequest(request)}
-                    >
-                      <View style={styles.friendRequestButton}>
-                        <Text style={styles.buttonPlaceholder}>Confirm</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                      <View style={styles.removeButton}>
-                        <Text style={styles.buttonPlaceholder}>Remove</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
+              <Friend friendId={friend.id} friendsSince={friend.data.created} />
             );
           }
         })}
@@ -98,40 +70,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
   },
-  requests: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  friendRequestButton: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#6CA9D6',
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 10,
-    marginTop: 10,
-  },
-  removeButton: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'grey',
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 10,
-    marginTop: 10,
-    marginLeft: 10,
-  },
-  buttonPlaceholder: { fontSize: 18 },
-
-  friendSection: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  buttons: { display: 'flex', flexDirection: 'row' },
 });
 
 export { FriendRequests };

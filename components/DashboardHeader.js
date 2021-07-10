@@ -6,6 +6,7 @@ import firebase from 'firebase/app';
 import { useFirestoreCollection } from './hooks';
 import { useHistory } from 'react-router-native';
 import moment from 'moment';
+import { Notifications } from './Notifications';
 
 function DashboardHeader(props) {
   const db = firebase.firestore();
@@ -16,14 +17,12 @@ function DashboardHeader(props) {
   const [searchIsOpen, setSearchIsOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
-  const seeFriends = useFirestoreCollection(
-    db.collection('accounts').doc(userId).collection('friends'),
+  const fetchNotifications = useFirestoreCollection(
+    db.collection('accounts').doc(userId).collection('notifications'),
     []
   );
 
-  const goToFriendRequests = () => {
-    history.push(`/friendRequests/${userId}`);
-  };
+  console.log(fetchNotifications.length);
 
   return (
     <View style={styles.headerContainer}>
@@ -36,29 +35,47 @@ function DashboardHeader(props) {
         <TouchableOpacity
           onPress={() => setNotificationsOpen(!notificationsOpen)}
         >
-          <Feather name='bell' size={25} color='white' style={styles.bell} />
+          <View style={styles.notificationIconContainer}>
+            <View style={styles.iconContainer}>
+              <Feather
+                name='bell'
+                size={25}
+                color='white'
+                style={styles.bell}
+              />
+            </View>
+            <Text style={styles.notifNumber}>{fetchNotifications.length}</Text>
+          </View>
         </TouchableOpacity>
         {notificationsOpen ? (
           <View style={styles.notificationsOpen}>
             <View style={styles.notificationHeader}>
               <Text style={styles.notificationHeaderText}>Notifications</Text>
             </View>
-            {seeFriends.map((friend) => {
-              if (friend.data.requestAccepted === false) {
+            {fetchNotifications.map((notification) => {
+              if (
+                notification.data.isFriend === false &&
+                userId !== notification.id
+              ) {
                 return (
-                  <View style={styles.notificationBody} key={friend.id}>
-                    <TouchableOpacity onPress={goToFriendRequests}>
-                      <View style={styles.newNotif}>
-                        <Text style={styles.userName}>{friend.id}</Text>
-                        <Text>would like to add you as a friend</Text>
-                        <Text style={styles.date}>
-                          {moment(friend.data.created.toDate()).format(
-                            'MMM Do'
-                          )}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
+                  <Notifications
+                    friendId={notification.id}
+                    created={notification.data.created}
+                    userId={userId}
+                    placeholder='Added you as a friend'
+                    isRead={notification.data.markedAsRead}
+                  />
+                );
+              }
+              if (notification.data.isFriend === true) {
+                return (
+                  <Notifications
+                    friendId={notification.id}
+                    created={notification.data.created}
+                    userId={userId}
+                    placeholder='accepted your friend request'
+                    isRead={notification.data.markedAsRead}
+                  />
                 );
               }
             })}
@@ -92,7 +109,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  notificationIconContainer: { marginTop: 25 },
   bell: { marginRight: 20 },
+  notifNumber: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    bottom: 35,
+    left: 15,
+    color: '#A2D8EB',
+  },
+
   notificationsOpen: {
     display: 'flex',
     flexDirection: 'column',
@@ -116,23 +142,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   notificationHeaderText: { fontSize: 18 },
-  notificationBody: {
-    display: 'flex',
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    padding: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-  },
-  userName: { fontWeight: 'bold', marginRight: 5 },
-  newNotif: { display: 'flex', flexDirection: 'column', alignItems: 'center' },
-  circle: {
-    backgroundColor: '#A2D8EB',
-    width: 7,
-    height: 7,
-    borderRadius: 50,
-    marginLeft: 10,
-  },
 });
 
 export { DashboardHeader };
