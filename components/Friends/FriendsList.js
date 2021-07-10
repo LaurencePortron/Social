@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { useFirestoreCollection } from './hooks';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useFirestoreCollection } from '../hooks';
 import firebase from 'firebase/app';
-import { PageHeaders } from './PageHeaders';
+import { PageHeaders } from '../AppComponents/PageHeaders';
 import { useHistory } from 'react-router-native';
 import { Friend } from './Friend';
 
@@ -39,7 +39,10 @@ function FriendsList(props) {
           friend.data.isFriend === true
         )
           return (
-            <TouchableOpacity onPress={() => goToFriendProfile(friendId)}>
+            <TouchableOpacity
+              onPress={() => goToFriendProfile(friendId)}
+              key={friend.id}
+            >
               <Friend
                 key={friend.id}
                 friendId={friend.id}

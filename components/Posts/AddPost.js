@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import firebase from 'firebase/app';
-import { useFirestoreDocument } from './hooks';
+import { useFirestoreDocument } from '../hooks';
 import { useHistory } from 'react-router-native';
 import { CustomModal } from './CustomModal';
 import { Feelings } from './Feelings';

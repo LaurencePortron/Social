@@ -1,13 +1,5 @@
-import React, { useState } from 'react';
-import {
-  ScrollView,
-  Text,
-  StyleSheet,
-  Image,
-  View,
-  TouchableOpacity,
-} from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import React from 'react';
+import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 
 function ProfileButtons({
   onPressNavigationSecondButton,

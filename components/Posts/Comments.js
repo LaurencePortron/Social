@@ -1,14 +1,12 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { useFirestoreDocument } from './hooks';
+import { useFirestoreDocument } from '../hooks';
 import firebase from 'firebase/app';
-import Avatar from './avatar.png';
+import Avatar from '../Images/avatar.png';
 import moment from 'moment';
 
 function Comments({ commentId, commentContent, postCreated, idOfUser }) {
   const db = firebase.firestore();
-  const user = firebase.auth().currentUser;
-  const userId = user.uid;
 
   const fetchUser = useFirestoreDocument(
     db.collection('accounts').doc(idOfUser),

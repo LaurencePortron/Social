@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useHistory } from 'react-router-native';
-import { PageHeaders } from './PageHeaders';
-import { useFirestoreCollection } from './hooks';
+import { PageHeaders } from '../AppComponents/PageHeaders';
+import { useFirestoreCollection } from '../hooks';
 import firebase from 'firebase/app';
 import { Friend } from './Friend';
 import { Request } from './Request';
@@ -44,7 +44,6 @@ function FriendRequests(props) {
         <Text style={styles.requestTitle}>Friend Requests</Text>
         {friendRequestsPending.map((friendId) => {
           if (friendId !== undefined) {
-            console.log(friendId);
             return <Request friendId={friendId} userId={userId} />;
           }
         })}

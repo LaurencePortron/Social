@@ -8,20 +8,19 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase/app';
-import { useFirestoreCollection, useFirestoreDocument } from './hooks';
-import Wave from './wave.jpg';
+import { useFirestoreCollection, useFirestoreDocument } from '../hooks';
+import Wave from '../Images/wave.jpg';
 import { useHistory } from 'react-router-native';
 import { Feather } from '@expo/vector-icons';
-import { Wall } from './Wall';
-import { UploadImageModal } from './UploadImageModal';
-import { Footer } from './Footer';
+import { Wall } from '../Wall/Wall';
+import { UploadImageModal } from '../AppComponents/UploadImageModal';
+import { Footer } from '../Wall/Footer';
 import { ProfileButtons } from './ProfileButtons';
 import { ProfileInfo } from './ProfileInfo';
-import Avatar from './avatar.png';
+import Avatar from '../Images/avatar.png';
 
 function Profile(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [friendRequested, setFriendRequested] = useState(false);
   const history = useHistory();
   const user = firebase.auth().currentUser;
   const userId = user.uid;

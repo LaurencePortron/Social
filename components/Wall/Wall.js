@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import firebase from 'firebase/app';
-import { useFirestoreCollection, useFirestoreDocument } from './hooks';
+import { useFirestoreCollection, useFirestoreDocument } from '../hooks';
 import { Feather } from '@expo/vector-icons';
 import { useHistory } from 'react-router-native';
-import { Post } from './Post';
+import { Post } from '../Posts/Post';
 
 function Wall({ profileId }) {
   const [isLiked, setIsLiked] = useState(false);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ScrollView,
   View,
@@ -8,9 +8,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { DashboardHeader } from './DashboardHeader';
-import { useFirestoreDocument } from './hooks';
+import { useFirestoreDocument } from '../hooks';
 import { Wall } from './Wall';
-import Avatar from './avatar.png';
 import firebase from 'firebase/app';
 import { Footer } from './Footer';
 import { useHistory } from 'react-router-native';

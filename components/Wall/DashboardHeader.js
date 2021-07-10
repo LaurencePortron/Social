@@ -1,28 +1,23 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { CustomSearchBar } from './CustomSearchBar';
+import { CustomSearchBar } from '../AppComponents/CustomSearchBar';
 import firebase from 'firebase/app';
-import { useFirestoreCollection } from './hooks';
-import { useHistory } from 'react-router-native';
-import moment from 'moment';
-import { Notifications } from './Notifications';
+import { useFirestoreCollection } from '../hooks';
+import { Notifications } from '../Notifications/Notifications';
 
 function DashboardHeader(props) {
+  const [searchIsOpen, setSearchIsOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
   const userId = user.uid;
-  const history = useHistory();
-
-  const [searchIsOpen, setSearchIsOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   const fetchNotifications = useFirestoreCollection(
     db.collection('accounts').doc(userId).collection('notifications'),
     []
   );
-
-  console.log(fetchNotifications.length);
 
   return (
     <View style={styles.headerContainer}>

@@ -59,7 +59,7 @@ function SignUp(props) {
 
   return (
     <ImageBackground
-      source={require('./wave.jpg')}
+      source={require('../Images/wave.jpg')}
       style={styles.backgroundImage}
     >
       <View style={styles.mainContainer}>

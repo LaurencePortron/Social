@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NativeRouter, Redirect, Route } from 'react-router-native';
-import { Login } from './components/Login';
-import { SignUp } from './components/SignUp';
-import { Dashboard } from './components/Dashboard';
+import { Login } from './components/Logins/Login';
+import { SignUp } from './components/Logins/SignUp';
+import { Dashboard } from './components/Wall/Dashboard';
 import { UserContext } from './components/Context';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import { Profile } from './components/Profile';
-import { OpenPost } from './components/OpenPost';
-import { EditProfile } from './components/EditProfile';
-import { AddPost } from './components/AddPost';
-import { FeelingsActivities } from './components/FeelingsActivities';
-import { FriendRequests } from './components/FriendRequests';
-import { FriendsList } from './components/FriendsList';
+import { Profile } from './components/Profile/Profile';
+import { OpenPost } from './components/Posts/OpenPost';
+import { EditProfile } from './components/Profile/EditProfile';
+import { AddPost } from './components/Posts/AddPost';
+import { FeelingsActivities } from './components/Posts/FeelingsActivities';
+import { FriendRequests } from './components/Friends/FriendRequests';
+import { FriendsList } from './components/Friends/FriendsList';
 
 var firebaseConfig = {
   apiKey: 'AIzaSyDsxrCO7UQTovxcf-_IYc5I3yx4Q9orDAc',

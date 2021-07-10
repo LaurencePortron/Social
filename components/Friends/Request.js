@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useHistory } from 'react-router-native';
-import { useFirestoreDocument } from './hooks';
+import { useFirestoreDocument } from '../hooks';
 import firebase from 'firebase/app';
-import Avatar from './avatar.png';
+import Avatar from '../Images/avatar.png';
 
 function Request({ friendId, userId }) {
   const history = useHistory();

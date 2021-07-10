@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { useHistory } from 'react-router-native';
 import moment from 'moment';
 import { Feelings } from './Feelings';
-import { useFirestoreDocument } from './hooks';
+import { useFirestoreDocument } from '../hooks';
 import firebase from 'firebase/app';
-import Avatar from './avatar.png';
+import Avatar from '../Images/avatar.png';
 
 function Post({ idOfUser, selectedFeeling, postCreated, postContent }) {
   const db = firebase.firestore();

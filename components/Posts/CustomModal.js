@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { View, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 import { FeelingsActivities } from './FeelingsActivities';
 
-function CustomModal({
-  placeholder,
-  addAFeeling,
-  emojiSelected,
-  setEmojiSelected,
-}) {
+function CustomModal({ placeholder, addAFeeling }) {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View>
@@ -23,7 +18,6 @@ function CustomModal({
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
             setModalVisible(!modalVisible);
           }}
         >

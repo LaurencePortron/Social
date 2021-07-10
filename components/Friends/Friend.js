@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { useFirestoreDocument } from './hooks';
+import { useFirestoreDocument } from '../hooks';
 import firebase from 'firebase/app';
-import Avatar from './avatar.png';
+import Avatar from '../Images/avatar.png';
 import moment from 'moment';
 
 function Friend({ friendId, friendsSince }) {
@@ -18,7 +18,7 @@ function Friend({ friendId, friendsSince }) {
   }
 
   return (
-    <View style={styles.friends} key={friendId}>
+    <View style={styles.friends}>
       {fetchFriendInfo.data.profilePicture ? (
         <TouchableOpacity onPress={() => goToProfile(friendId)}>
           <Image

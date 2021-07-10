@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { useFirestoreDocument } from './hooks';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useFirestoreDocument } from '../hooks';
 import firebase from 'firebase/app';
 import moment from 'moment';
-import { Feather } from '@expo/vector-icons';
 import { useHistory } from 'react-router-native';
 
 function Notifications({ friendId, created, userId, placeholder, isRead }) {

@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import firebase from 'firebase/app';
 import { useHistory } from 'react-router-native';
 
 function Footer({ profileId }) {
   const history = useHistory();
-  const user = firebase.auth().currentUser;
 
   const handleLogOut = (event) => {
     firebase

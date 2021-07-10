@@ -4,16 +4,15 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Image,
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import { useFirestoreDocument, useFirestoreCollection } from './hooks';
+import { useFirestoreDocument, useFirestoreCollection } from '../hooks';
 import firebase from 'firebase/app';
 import { Feather } from '@expo/vector-icons';
 import { useHistory } from 'react-router-native';
 import { Comments } from './Comments';
-import { PageHeaders } from './PageHeaders';
+import { PageHeaders } from '../AppComponents/PageHeaders';
 import { Post } from './Post';
 
 function OpenPost(props) {
