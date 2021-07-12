@@ -74,6 +74,7 @@ function OpenPost(props) {
             selectedFeeling={fetchPost.data.feeling}
             postCreated={fetchPost.data.created}
             postContent={fetchPost.data.post}
+            isWith={fetchPost.data.isWith}
           />
         </View>
 

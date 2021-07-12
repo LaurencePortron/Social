@@ -6,8 +6,9 @@ import { Feelings } from './Feelings';
 import { useFirestoreDocument } from '../hooks';
 import firebase from 'firebase/app';
 import Avatar from '../Images/avatar.png';
+import { TaggedFriend } from '../Friends/TaggedFriend';
 
-function Post({ idOfUser, selectedFeeling, postCreated, postContent }) {
+function Post({ idOfUser, selectedFeeling, postCreated, postContent, isWith }) {
   const db = firebase.firestore();
   const history = useHistory();
 
@@ -15,12 +16,27 @@ function Post({ idOfUser, selectedFeeling, postCreated, postContent }) {
     history.push(`/profile/${id}`);
   };
 
+  const goToTaggedUserProfile = (isWith) => {
+    history.push(`/profile/${isWith}`);
+  };
+
   const fetchUser = useFirestoreDocument(
     db.collection('accounts').doc(idOfUser),
     []
   );
 
+  const fetchTaggedFriend = useFirestoreDocument(
+    db.collection('accounts').doc(isWith),
+    []
+  );
+
   if (!fetchUser) {
+    return null;
+  }
+
+  console.log('fetchTaggedFriend', fetchTaggedFriend);
+
+  if (!fetchTaggedFriend) {
     return null;
   }
 
@@ -43,6 +59,17 @@ function Post({ idOfUser, selectedFeeling, postCreated, postContent }) {
             <Text style={styles.userName}>{fetchUser.data.userName}</Text>
             <Feelings selectedFeeling={selectedFeeling} />
           </View>
+          {fetchTaggedFriend === undefined || isWith === undefined ? null : (
+            <View style={styles.isWithContainer}>
+              <Text style={styles.isWith}>with</Text>
+              <TouchableOpacity onPress={() => goToTaggedUserProfile(isWith)}>
+                <Text style={styles.isWithUserName}>
+                  {fetchTaggedFriend.data.userName}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
           <Text style={styles.date}>
             {moment(postCreated.toDate()).format('MMM Do')}
           </Text>
@@ -71,6 +98,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#6CA9D6',
   },
+  isWithContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  isWith: {
+    fontSize: 18,
+  },
+  isWithUserName: { marginLeft: 5, fontSize: 18, fontWeight: 'bold' },
   avatarImage: { width: 40, height: 40, borderRadius: 50 },
 
   date: { color: '#A8A39F' },

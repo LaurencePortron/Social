@@ -53,6 +53,8 @@ function Wall({ profileId }) {
     history.push(`/post/${postId}`);
   };
 
+  console.log(fetchPosts);
+
   return (
     <View style={styles.postContainer}>
       {fetchPosts.map((post) => {
@@ -67,6 +69,7 @@ function Wall({ profileId }) {
                 selectedFeeling={post.data.feeling}
                 postCreated={post.data.created}
                 postContent={post.data.post}
+                isWith={post.data.isWith}
               />
 
               <View style={styles.reactionData}>

@@ -9,17 +9,18 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import firebase from 'firebase/app';
-import { useFirestoreDocument } from '../hooks';
 import { useHistory } from 'react-router-native';
-import { CustomModal } from './CustomModal';
-import { Feelings } from './Feelings';
+import { useFirestoreDocument } from '../hooks';
+import { CustomModal } from '../Posts/CustomModal';
+import { Feelings } from '../Posts/Feelings';
+import { TagFriendsModal } from '../Friends/TagFriendsModal';
+import { TaggedFriend } from '../Friends/TaggedFriend';
 
 function AddPost(props) {
   const [post, setPost] = useState('');
   const [feeling, setFeeling] = useState('');
-  const [emojiSelected, setEmojiSelected] = useState(false);
-
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [tagFriend, setTagFriend] = useState('');
   const history = useHistory();
 
   const user = firebase.auth().currentUser;
@@ -45,6 +46,7 @@ function AddPost(props) {
       userId: userId,
       created: firebase.firestore.Timestamp.fromDate(new Date()),
       feeling: feeling,
+      isWith: tagFriend,
     });
     history.push(`/dashboard`);
   };
@@ -53,10 +55,17 @@ function AddPost(props) {
     history.push(`/dashboard`);
   };
 
-  const placeholder = (
+  const feelingplaceholder = (
     <View style={styles.mainSection}>
       <Feather name='smile' size={25} color='black' />
       <Text style={styles.toolText}>Feeling/Activity</Text>
+    </View>
+  );
+
+  const tagFriendsPlaceholder = (
+    <View style={styles.mainSection}>
+      <Feather name='tag' size={25} color='black' />
+      <Text style={styles.toolText}>Tag Friends</Text>
     </View>
   );
 
@@ -76,13 +85,17 @@ function AddPost(props) {
           source={{ uri: getCurrentLoggedUser.data.profilePicture }}
           style={styles.profileImage}
         />
-        <Text style={styles.userName}>
-          {getCurrentLoggedUser.data.userName}
-        </Text>
+        <View style={styles.userNameContainer}>
+          <Text style={styles.userName}>
+            {getCurrentLoggedUser.data.userName}
+          </Text>
+          <Feelings selectedFeeling={feeling} />
+
+          {tagFriend ? (
+            <TaggedFriend friendId={tagFriend} userId={userId} />
+          ) : null}
+        </View>
       </View>
-      <Text style={styles.emojis}>
-        <Feelings selectedFeeling={feeling} />
-      </Text>
 
       <TextInput
         style={styles.textInput}
@@ -100,13 +113,16 @@ function AddPost(props) {
           </View>
         </TouchableOpacity>
         <CustomModal
-          placeholder={placeholder}
+          placeholder={feelingplaceholder}
           addAFeeling={(emoji) => setFeeling(emoji)}
         />
-        <View style={styles.toolsSection}>
-          <Feather name='tag' size={25} color='black' />
-          <Text style={styles.toolText}>Tag people</Text>
-        </View>
+        <TouchableOpacity>
+          <TagFriendsModal
+            placeholder={tagFriendsPlaceholder}
+            userId={userId}
+            handleTagFriend={(friend) => setTagFriend(friend)}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -128,18 +144,23 @@ const styles = StyleSheet.create({
   },
   headerTitle: { fontWeight: 'bold', fontSize: 18 },
   postButton: { fontWeight: 'bold', fontSize: 18, color: '#A8A39F' },
-  userName: { fontSize: 20, fontWeight: 'bold', marginLeft: 10 },
-  emojis: { marginLeft: 20, marginTop: 20, fontSize: 18 },
+  userNameContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userName: { fontSize: 20, fontWeight: 'bold', marginLeft: 3 },
+  emojis: { marginLeft: 5, fontSize: 18 },
   profileImage: { width: 40, height: 40, borderRadius: 50 },
   user: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 20,
+    marginLeft: 10,
   },
   textInput: { color: 'black', fontSize: 18, marginLeft: 20, marginTop: 22 },
   toolsContainer: {
-    marginTop: 320,
+    marginTop: 280,
     bottom: 0,
     backgroundColor: '#E8E8E8',
     padding: 10,
