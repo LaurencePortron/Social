@@ -34,8 +34,6 @@ function Post({ idOfUser, selectedFeeling, postCreated, postContent, isWith }) {
     return null;
   }
 
-  console.log('fetchTaggedFriend', fetchTaggedFriend);
-
   if (!fetchTaggedFriend) {
     return null;
   }

@@ -18,7 +18,6 @@ import { Post } from './Post';
 function OpenPost(props) {
   const [comment, setComment] = useState('');
   const postId = props.match.params.id;
-  const profileId = props.match.params.profileId;
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
   const userId = user.uid;
@@ -41,9 +40,13 @@ function OpenPost(props) {
     return null;
   }
 
+  const userIdOfPost = fetchPost.data.userId;
+
   const handleCommentInput = (inputText) => {
     setComment(inputText);
   };
+
+  // we need the id of the user who posted the initial post
 
   const addCommentToPost = () => {
     db.collection('posts')
@@ -54,7 +57,16 @@ function OpenPost(props) {
         created: firebase.firestore.Timestamp.fromDate(new Date()),
         user: userId,
       });
-    setComment('');
+    db.collection('accounts')
+      .doc(userIdOfPost)
+      .collection('commentNotifications')
+      .add({
+        created: firebase.firestore.Timestamp.fromDate(new Date()),
+        comment: comment,
+        userId: userId,
+        post: postId,
+        markAsRead: false,
+      });
   };
 
   const backToDashboard = () => {
@@ -114,6 +126,7 @@ function OpenPost(props) {
             </View>
           </TouchableOpacity>
         </View>
+
         {fetchComments.map((comment) => {
           return (
             <Comments

@@ -5,6 +5,7 @@ import { CustomSearchBar } from '../AppComponents/CustomSearchBar';
 import firebase from 'firebase/app';
 import { useFirestoreCollection } from '../hooks';
 import { Notifications } from '../Notifications/Notifications';
+import { CommentNotifications } from '../Notifications/CommentNotifications';
 
 function DashboardHeader(props) {
   const [searchIsOpen, setSearchIsOpen] = useState(false);
@@ -14,8 +15,13 @@ function DashboardHeader(props) {
   const user = firebase.auth().currentUser;
   const userId = user.uid;
 
-  const fetchNotifications = useFirestoreCollection(
-    db.collection('accounts').doc(userId).collection('notifications'),
+  const fetchFriendsNotifications = useFirestoreCollection(
+    db.collection('accounts').doc(userId).collection('friendsNotifications'),
+    []
+  );
+
+  const fetchCommentNotifications = useFirestoreCollection(
+    db.collection('accounts').doc(userId).collection('commentNotifications'),
     []
   );
 
@@ -47,22 +53,25 @@ function DashboardHeader(props) {
             <View style={styles.notificationHeader}>
               <Text style={styles.notificationHeaderText}>Notifications</Text>
             </View>
-            {fetchNotifications.map((notification) => {
+            {fetchFriendsNotifications.map((notification) => {
               if (
                 notification.data.isFriend === false &&
                 userId !== notification.id
               ) {
                 return (
-                  <Notifications
-                    key={notification.id}
-                    friendId={notification.id}
-                    created={notification.data.created}
-                    userId={userId}
-                    placeholder='Added you as a friend'
-                    isRead={notification.data.markedAsRead}
-                  />
+                  <View>
+                    <Notifications
+                      key={notification.id}
+                      friendId={notification.id}
+                      created={notification.data.created}
+                      userId={userId}
+                      placeholder='added you as a friend'
+                      isRead={notification.data.markedAsRead}
+                    />
+                  </View>
                 );
               }
+
               if (notification.data.isFriend === true) {
                 return (
                   <Notifications
@@ -75,6 +84,19 @@ function DashboardHeader(props) {
                   />
                 );
               }
+            })}
+            {fetchCommentNotifications.map((comment) => {
+              return (
+                <CommentNotifications
+                  postId={comment.data.post}
+                  created={comment.data.created}
+                  friendId={comment.data.userId}
+                  placeholder='commented on your post'
+                  isRead={comment.data.markedAsRead}
+                  userId={userId}
+                  commentId={comment.id}
+                />
+              );
             })}
           </View>
         ) : null}

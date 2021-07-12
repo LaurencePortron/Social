@@ -48,6 +48,7 @@ function AddPost(props) {
       feeling: feeling,
       isWith: tagFriend,
     });
+
     history.push(`/dashboard`);
   };
 

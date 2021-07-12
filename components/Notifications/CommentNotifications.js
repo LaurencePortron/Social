@@ -5,12 +5,20 @@ import firebase from 'firebase/app';
 import moment from 'moment';
 import { useHistory } from 'react-router-native';
 
-function Notifications({ friendId, created, userId, placeholder, isRead }) {
+function CommentNotifications({
+  friendId,
+  placeholder,
+  created,
+  isRead,
+  postId,
+  userId,
+  commentId,
+}) {
   const history = useHistory();
   const db = firebase.firestore();
 
-  const goToFriendRequests = () => {
-    history.push(`/friendRequests/${userId}`);
+  const goToPost = () => {
+    history.push(`/post/${postId}`);
   };
 
   const getFriendInfo = useFirestoreDocument(
@@ -25,8 +33,8 @@ function Notifications({ friendId, created, userId, placeholder, isRead }) {
   const markAsRead = () => {
     db.collection('accounts')
       .doc(userId)
-      .collection('friendsNotifications')
-      .doc(friendId)
+      .collection('commentNotifications')
+      .doc(commentId)
       .update({
         markedAsRead: true,
       });
@@ -38,9 +46,9 @@ function Notifications({ friendId, created, userId, placeholder, isRead }) {
         styles.notificationBody,
         isRead === true ? styles.notificationBodyMarkedAsRead : null,
       ]}
-      key={friendId}
+      key={commentId}
     >
-      <TouchableOpacity onPress={goToFriendRequests}>
+      <TouchableOpacity onPress={() => goToPost(postId)}>
         <View style={styles.newNotif}>
           <Text style={styles.userName}>{getFriendInfo.data.userName}</Text>
           <Text>{placeholder}</Text>
@@ -83,4 +91,4 @@ const styles = StyleSheet.create({
   markAsRead: { textDecorationLine: 'underline', marginTop: 10, fontSize: 15 },
 });
 
-export { Notifications };
+export { CommentNotifications };

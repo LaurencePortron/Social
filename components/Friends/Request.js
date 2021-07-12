@@ -14,8 +14,6 @@ function Request({ friendId, userId }) {
     []
   );
 
-  console.log(fetchUserInfo);
-
   if (!fetchUserInfo) {
     return null;
   }
@@ -39,7 +37,7 @@ function Request({ friendId, userId }) {
       });
     db.collection('accounts')
       .doc(friendId)
-      .collection('notifications')
+      .collection('friendsNotifications')
       .doc(userId)
       .set({
         friends: userId,

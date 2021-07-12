@@ -53,8 +53,6 @@ function Wall({ profileId }) {
     history.push(`/post/${postId}`);
   };
 
-  console.log(fetchPosts);
-
   return (
     <View style={styles.postContainer}>
       {fetchPosts.map((post) => {

@@ -102,7 +102,7 @@ function Profile(props) {
       });
     db.collection('accounts')
       .doc(profileId)
-      .collection('notifications')
+      .collection('friendsNotifications')
       .doc(userId)
       .set({
         friends: userId,
