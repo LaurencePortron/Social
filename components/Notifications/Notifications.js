@@ -50,7 +50,7 @@ function Notifications({ friendId, created, userId, placeholder, isRead }) {
         </Text>
         {isRead === true ? null : (
           <TouchableOpacity onPress={markAsRead}>
-            <Text>Mark as read</Text>
+            <Text style={styles.markAsRead}>Mark as read</Text>
           </TouchableOpacity>
         )}
       </TouchableOpacity>
@@ -64,16 +64,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#D8D9DD',
     padding: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
   },
   notificationBodyMarkedAsRead: {
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: 'white',
     padding: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
   },
 
   newNotif: { display: 'flex', flexDirection: 'row', alignItems: 'center' },

@@ -36,6 +36,8 @@ function OpenPost(props) {
     [postId]
   );
 
+  const numberOfComments = fetchComments.length;
+
   if (!fetchPost) {
     return null;
   }
@@ -88,43 +90,6 @@ function OpenPost(props) {
             postContent={fetchPost.data.post}
             isWith={fetchPost.data.isWith}
           />
-        </View>
-
-        <View style={styles.reactionContainer}>
-          <TouchableOpacity onPress={() => addLikesToDb(fetchPost.id)}>
-            {fetchPost.data.isLiked ? (
-              <View style={styles.reactionSection}>
-                <Text style={styles.heartClicked}>&#x2665;</Text>
-                <Text style={styles.reactionText}>Unlove</Text>
-              </View>
-            ) : (
-              <View style={styles.reactionSection}>
-                <Text style={styles.heart}>&#x2661;</Text>
-                <Text style={styles.reactionText}>Love</Text>
-              </View>
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.reactionSection}>
-              <Feather name='message-square' size={25} color='grey' />
-              <Text style={styles.reactionText}>Comment</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.reactionData}>
-          <View style={styles.reactionSection}>
-            {fetchPost.data.isLiked ? (
-              <Text style={styles.reactionText}>1 like</Text>
-            ) : (
-              <Text style={styles.reactionText}>0 like</Text>
-            )}
-          </View>
-          <TouchableOpacity>
-            <View style={styles.reactionSection}>
-              <Text style={styles.reactionText}>2 comments</Text>
-            </View>
-          </TouchableOpacity>
         </View>
 
         {fetchComments.map((comment) => {

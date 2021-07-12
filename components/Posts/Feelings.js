@@ -12,7 +12,7 @@ function Feelings({ selectedFeeling }) {
       ) : null}
 
       {selectedFeeling === 'is feeling sad &#128532;' ? (
-        <Text style={styles.emojis}> is feeling loved &#128532;</Text>
+        <Text style={styles.emojis}> is feeling sad &#128532;</Text>
       ) : null}
 
       {selectedFeeling === 'is feeling excited &#129321;' ? (

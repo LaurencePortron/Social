@@ -7,13 +7,18 @@ function TaggedFriend({ friendId }) {
   const db = firebase.firestore();
 
   const fetchFriendInfo = useFirestoreDocument(
-    firebase.firestore().collection('accounts').doc(friendId),
+    db.collection('accounts').doc(friendId),
     []
   );
 
   if (!fetchFriendInfo) {
     return null;
   }
+
+  if (friendId === undefined) {
+    return null;
+  }
+
   return (
     <View style={styles.friendSection}>
       <Text style={styles.isWith}>with</Text>

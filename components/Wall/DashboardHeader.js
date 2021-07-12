@@ -53,6 +53,20 @@ function DashboardHeader(props) {
             <View style={styles.notificationHeader}>
               <Text style={styles.notificationHeaderText}>Notifications</Text>
             </View>
+            {fetchCommentNotifications.map((comment) => {
+              return (
+                <CommentNotifications
+                  key={comment.id}
+                  postId={comment.data.post}
+                  created={comment.data.created}
+                  friendId={comment.data.userId}
+                  placeholder='commented on your post'
+                  isRead={comment.data.markedAsRead}
+                  userId={userId}
+                  commentId={comment.id}
+                />
+              );
+            })}
             {fetchFriendsNotifications.map((notification) => {
               if (
                 notification.data.isFriend === false &&
@@ -61,7 +75,7 @@ function DashboardHeader(props) {
                 return (
                   <View>
                     <Notifications
-                      key={notification.id}
+                      key={userId}
                       friendId={notification.id}
                       created={notification.data.created}
                       userId={userId}
@@ -84,19 +98,6 @@ function DashboardHeader(props) {
                   />
                 );
               }
-            })}
-            {fetchCommentNotifications.map((comment) => {
-              return (
-                <CommentNotifications
-                  postId={comment.data.post}
-                  created={comment.data.created}
-                  friendId={comment.data.userId}
-                  placeholder='commented on your post'
-                  isRead={comment.data.markedAsRead}
-                  userId={userId}
-                  commentId={comment.id}
-                />
-              );
             })}
           </View>
         ) : null}

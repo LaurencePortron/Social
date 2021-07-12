@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { useHistory } from 'react-router-native';
 import moment from 'moment';
 import { Feelings } from './Feelings';
-import { useFirestoreDocument } from '../hooks';
+import { useFirestoreDocument, useFirestoreCollection } from '../hooks';
 import firebase from 'firebase/app';
 import Avatar from '../Images/avatar.png';
+import { Feather } from '@expo/vector-icons';
 import { TaggedFriend } from '../Friends/TaggedFriend';
 
-function Post({ idOfUser, selectedFeeling, postCreated, postContent, isWith }) {
+function Post({
+  idOfUser,
+  selectedFeeling,
+  postCreated,
+  postContent,
+  isWith,
+  postId,
+}) {
+  // const [numberOfLikes, setNumberOfLikes] = useState(0);
+
   const db = firebase.firestore();
   const history = useHistory();
 
@@ -25,55 +35,102 @@ function Post({ idOfUser, selectedFeeling, postCreated, postContent, isWith }) {
     []
   );
 
-  const fetchTaggedFriend = useFirestoreDocument(
-    db.collection('accounts').doc(isWith),
+  const fetchComments = useFirestoreCollection(
+    db.collection('posts').doc(postId).collection('comments'),
     []
   );
+
+  if (!fetchComments) {
+    return null;
+  }
+
+  const numberOfComments = fetchComments.length;
+
+  // const inCrementLikes = () => {
+  //   setNumberOfLikes(numberOfLikes + 1);
+  // };
+
+  // const addLikesToDb = (postId) => {
+  //   db.collection('posts').doc(postId).update({
+  //     numberOfLikes: numberOfLikes,
+  //   });
+  // };
+
+  // console.log(numberOfLikes);
+
+  const openPost = (postId) => {
+    history.push(`/post/${postId}`);
+  };
 
   if (!fetchUser) {
     return null;
   }
 
-  if (!fetchTaggedFriend) {
+  if (!fetchComments) {
     return null;
   }
 
   return (
     <View>
-      <View style={styles.userHeader}>
-        {fetchUser.data.profilePicture ? (
-          <TouchableOpacity onPress={() => goToProfile(idOfUser)}>
-            <Image
-              source={{ uri: fetchUser.data.profilePicture }}
-              style={styles.avatarImage}
-            />
-          </TouchableOpacity>
-        ) : (
-          <Image source={Avatar} style={styles.avatarImage} />
-        )}
-
-        <View style={styles.detailsContainer}>
-          <View style={styles.userfeelings}>
-            <Text style={styles.userName}>{fetchUser.data.userName}</Text>
-            <Feelings selectedFeeling={selectedFeeling} />
-          </View>
-          {fetchTaggedFriend === undefined || isWith === undefined ? null : (
-            <View style={styles.isWithContainer}>
-              <Text style={styles.isWith}>with</Text>
-              <TouchableOpacity onPress={() => goToTaggedUserProfile(isWith)}>
-                <Text style={styles.isWithUserName}>
-                  {fetchTaggedFriend.data.userName}
-                </Text>
-              </TouchableOpacity>
-            </View>
+      <View>
+        <View style={styles.userHeader}>
+          {fetchUser.data.profilePicture ? (
+            <TouchableOpacity onPress={() => goToProfile(idOfUser)}>
+              <Image
+                source={{ uri: fetchUser.data.profilePicture }}
+                style={styles.avatarImage}
+              />
+            </TouchableOpacity>
+          ) : (
+            <Image source={Avatar} style={styles.avatarImage} />
           )}
 
-          <Text style={styles.date}>
-            {moment(postCreated.toDate()).format('MMM Do')}
-          </Text>
+          <View style={styles.detailsContainer}>
+            <View style={styles.userfeelings}>
+              <Text style={styles.userName}>{fetchUser.data.userName}</Text>
+              <Feelings selectedFeeling={selectedFeeling} />
+            </View>
+
+            {isWith ? (
+              <View style={styles.isWithContainer}>
+                <TouchableOpacity onPress={() => goToTaggedUserProfile(isWith)}>
+                  <TaggedFriend friendId={isWith} />
+                </TouchableOpacity>
+              </View>
+            ) : null}
+
+            <Text style={styles.date}>
+              {moment(postCreated.toDate()).format('MMM Do')}
+            </Text>
+          </View>
+        </View>
+        <Text style={styles.post}>{postContent}</Text>
+      </View>
+      <View style={styles.reactionData}>
+        <View style={styles.reactionSection}>
+          <Text style={styles.reactionText}>0 likes</Text>
+        </View>
+        <View style={styles.reactionSection}>
+          <Text style={styles.reactionText}>{numberOfComments} comments</Text>
         </View>
       </View>
-      <Text style={styles.post}>{postContent}</Text>
+
+      <View style={styles.reactionContainer}>
+        <TouchableOpacity
+        // onPress={(() => inCrementLikes(postId), addLikesToDb(postId))}
+        >
+          <View style={styles.reactionSection}>
+            <Text style={styles.heart}>&#x2661;</Text>
+            <Text style={styles.reactionText}>Love</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => openPost(postId)}>
+          <View style={styles.reactionSection}>
+            <Feather name='message-square' size={25} color='grey' />
+            <Text style={styles.reactionText}>Comment</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -109,6 +166,37 @@ const styles = StyleSheet.create({
 
   date: { color: '#A8A39F' },
   post: { fontSize: 22 },
+  emojis: { fontSize: 18 },
+
+  reactionData: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#A2D8EB',
+    padding: 10,
+  },
+  reactionSection: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  heart: { color: 'grey', fontSize: 28 },
+  heartClicked: { color: 'red', fontSize: 28 },
+  reactionText: {
+    marginLeft: 10,
+    color: 'grey',
+  },
+
+  reactionContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+
+    padding: 10,
+  },
 });
 
 export { Post };
