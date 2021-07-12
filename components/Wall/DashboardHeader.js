@@ -39,7 +39,7 @@ function DashboardHeader(props) {
                 style={styles.bell}
               />
             </View>
-            <Text style={styles.notifNumber}>{fetchNotifications.length}</Text>
+            <View style={styles.circle}></View>
           </View>
         </TouchableOpacity>
         {notificationsOpen ? (
@@ -54,6 +54,7 @@ function DashboardHeader(props) {
               ) {
                 return (
                   <Notifications
+                    key={notification.id}
                     friendId={notification.id}
                     created={notification.data.created}
                     userId={userId}
@@ -65,6 +66,7 @@ function DashboardHeader(props) {
               if (notification.data.isFriend === true) {
                 return (
                   <Notifications
+                    key={notification.id}
                     friendId={notification.id}
                     created={notification.data.created}
                     userId={userId}
@@ -103,15 +105,19 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    position: 'absolute',
+    left: 280,
   },
-  notificationIconContainer: { marginTop: 25 },
+  notificationIconContainer: { marginTop: 15 },
   bell: { marginRight: 20 },
-  notifNumber: {
-    fontSize: 20,
+  circle: {
+    backgroundColor: '#A2D8EB',
+    borderRadius: 50,
     fontWeight: 'bold',
-    bottom: 35,
+    bottom: 30,
     left: 15,
-    color: '#A2D8EB',
+    width: 10,
+    height: 10,
   },
 
   notificationsOpen: {

@@ -4,9 +4,11 @@ import { useFirestoreDocument } from '../hooks';
 import firebase from 'firebase/app';
 import Avatar from '../Images/avatar.png';
 import moment from 'moment';
+import { useHistory } from 'react-router-native';
 
 function Friend({ friendId, friendsSince }) {
   const db = firebase.firestore();
+  const history = useHistory();
 
   const fetchFriendInfo = useFirestoreDocument(
     db.collection('accounts').doc(friendId),
@@ -16,6 +18,9 @@ function Friend({ friendId, friendsSince }) {
   if (!fetchFriendInfo) {
     return null;
   }
+  const goToProfile = (friendId) => {
+    history.push(`/profile/${friendId}`);
+  };
 
   return (
     <View style={styles.friends}>

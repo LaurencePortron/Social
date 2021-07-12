@@ -9,7 +9,12 @@ function PageHeaders({ placeholder, onPressNavigation }) {
   return (
     <TouchableOpacity onPress={onPressNavigation}>
       <View style={styles.postHeader}>
-        <Feather name='chevron-left' size={35} color='white' />
+        <Feather
+          name='chevron-left'
+          size={35}
+          color='white'
+          style={{ marginTop: 10 }}
+        />
         <Text style={styles.requestHeaderText}>{placeholder}</Text>
       </View>
     </TouchableOpacity>
@@ -17,17 +22,19 @@ function PageHeaders({ placeholder, onPressNavigation }) {
 }
 
 const styles = StyleSheet.create({
-  requestContainer: {
-    backgroundColor: 'white',
-  },
   postHeader: {
     backgroundColor: '#6CA9D6',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    padding: 20,
   },
-  requestHeaderText: { fontSize: 25, fontWeight: 'bold', color: 'white' },
+  requestHeaderText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'white',
+    marginTop: 10,
+  },
 });
 
 export { PageHeaders };

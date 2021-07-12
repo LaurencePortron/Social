@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform } from 'react-native';
+import { Button, Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import firebase from 'firebase/app';
 import 'firebase/storage';
 
-function UploadPostImage({ postId }) {
+function UploadCoverPicture({ profileId }) {
   const db = firebase.firestore();
 
   const pickImage = async () => {
@@ -17,8 +17,8 @@ function UploadPostImage({ postId }) {
 
     if (!result.cancelled) {
       const downloadURL = await uploadImage(result.uri);
-      db.collection('posts').doc(postId).update({
-        postPicture: downloadURL,
+      db.collection('accounts').doc(profileId).update({
+        coverPicture: downloadURL,
       });
     }
   };
@@ -26,17 +26,21 @@ function UploadPostImage({ postId }) {
   const uploadImage = async (uri) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-    var ref = firebase.storage().ref().child(`postPictures/`);
+    var ref = firebase.storage().ref().child(`coverPictures/${profileId}`);
     await ref.put(blob);
 
     return ref.getDownloadURL();
   };
 
   return (
-    <View>
-      <Button title='Upload profile picture' onPress={pickImage} />
+    <View style={styles.uploadContainer}>
+      <Button title='Upload cover picture' onPress={pickImage} />
     </View>
   );
 }
 
-export { UploadPostImage };
+const styles = StyleSheet.create({
+  uploadContainer: {},
+});
+
+export { UploadCoverPicture };

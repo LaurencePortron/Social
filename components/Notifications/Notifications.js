@@ -33,7 +33,13 @@ function Notifications({ friendId, created, userId, placeholder, isRead }) {
   };
 
   return (
-    <View style={styles.notificationBody} key={friendId}>
+    <View
+      style={[
+        styles.notificationBody,
+        isRead === true ? styles.notificationBodyMarkedAsRead : null,
+      ]}
+      key={friendId}
+    >
       <TouchableOpacity onPress={goToFriendRequests}>
         <View style={styles.newNotif}>
           <Text style={styles.userName}>{getFriendInfo.data.userName}</Text>
@@ -44,7 +50,7 @@ function Notifications({ friendId, created, userId, placeholder, isRead }) {
         </Text>
         {isRead === true ? null : (
           <TouchableOpacity onPress={markAsRead}>
-            <Text style={styles.markAsRead}>Mark as read</Text>
+            <Text>Mark as read</Text>
           </TouchableOpacity>
         )}
       </TouchableOpacity>
@@ -64,7 +70,7 @@ const styles = StyleSheet.create({
   notificationBodyMarkedAsRead: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#D8D9DD',
+    backgroundColor: 'white',
     padding: 10,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,

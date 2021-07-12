@@ -44,13 +44,19 @@ function FriendRequests(props) {
         <Text style={styles.requestTitle}>Friend Requests</Text>
         {friendRequestsPending.map((friendId) => {
           if (friendId !== undefined) {
-            return <Request friendId={friendId} userId={userId} />;
+            return (
+              <Request key={friendId} friendId={friendId} userId={userId} />
+            );
           }
         })}
         {friendRequestAccepted.map((friend) => {
           if (friend !== undefined) {
             return (
-              <Friend friendId={friend.id} friendsSince={friend.data.created} />
+              <Friend
+                key={friend.id}
+                friendId={friend.id}
+                friendsSince={friend.data.created}
+              />
             );
           }
         })}

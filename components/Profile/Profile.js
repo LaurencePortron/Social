@@ -18,9 +18,11 @@ import { Footer } from '../Wall/Footer';
 import { ProfileButtons } from './ProfileButtons';
 import { ProfileInfo } from './ProfileInfo';
 import Avatar from '../Images/avatar.png';
+import { UploadCoverPicture } from '../AppComponents/UploadCoverPicture';
 
 function Profile(props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [coverIsOpen, setCoverisOpen] = useState(false);
   const history = useHistory();
   const user = firebase.auth().currentUser;
   const userId = user.uid;
@@ -29,6 +31,10 @@ function Profile(props) {
 
   const openUpload = () => {
     setIsOpen(!isOpen);
+  };
+
+  const openCoverPictureUpload = () => {
+    setCoverisOpen(!coverIsOpen);
   };
 
   const getUserProfileInfo = useFirestoreDocument(
@@ -121,16 +127,24 @@ function Profile(props) {
     <ScrollView style={{ backgroundColor: 'white' }}>
       <View style={styles.headerSection}>
         <TouchableOpacity onPress={backToDashboard}>
-          <View style={styles.profileHeader}>
-            <Feather name='chevron-left' size={40} color='black' />
-          </View>
+          <Feather name='chevron-left' size={40} color='black' />
+          {getUserProfileInfo.data.coverPicture ? (
+            <Image
+              source={{ uri: getUserProfileInfo.data.coverPicture }}
+              style={styles.coverImage}
+            />
+          ) : (
+            <Image source={Wave} style={styles.coverImage} />
+          )}
         </TouchableOpacity>
-        <Image source={Wave} style={styles.coverImage} />
-        <View style={styles.cameraIconCover}>
-          <TouchableOpacity onPress={openUpload}>
-            <Feather name='camera' size={35} color='#6CA9D6' />
-          </TouchableOpacity>
-        </View>
+        {profileId !== userId ? null : (
+          <View style={styles.cameraIconCover}>
+            <TouchableOpacity onPress={openCoverPictureUpload}>
+              <Feather name='camera' size={35} color='#6CA9D6' />
+            </TouchableOpacity>
+          </View>
+        )}
+
         <View style={styles.profileImageSection}>
           {getUserProfileInfo.data.profilePicture ? (
             <Image
@@ -152,6 +166,7 @@ function Profile(props) {
         <Text style={styles.userName}>{getUserProfileInfo.data.userName}</Text>
       </View>
       {isOpen ? <UploadImageModal profileId={profileId} /> : null}
+      {coverIsOpen ? <UploadCoverPicture profileId={profileId} /> : null}
 
       {checkIfFriends ? (
         <ProfileButtons
@@ -197,19 +212,13 @@ function Profile(props) {
 }
 
 const styles = StyleSheet.create({
-  headerSection: { marginBottom: 100 },
-  profileHeader: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  coverImage: { width: '100%', height: 150 },
+  coverImage: { width: '100%', height: 200 },
   profileImageSection: {
     position: 'absolute',
     top: 90,
     left: 90,
   },
+
   profileImage: {
     borderRadius: 300,
     width: 200,
@@ -237,7 +246,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 35,
     textAlign: 'center',
-    top: 100,
+    marginTop: 50,
   },
   profileOptions: {
     display: 'flex',

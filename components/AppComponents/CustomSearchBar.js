@@ -46,19 +46,17 @@ function CustomSearchBar(props) {
   };
 
   return (
-    <View>
-      <View style={styles.toolsSection}>
-        <TextInput
-          style={styles.searchInput}
-          name='text'
-          placeholder='Search Friends..'
-          placeholderTextColor='#A8A39F'
-          onChangeText={handleSearchInput}
-        ></TextInput>
-        <TouchableOpacity onPress={() => openProfile(getUserIdOfSearch)}>
-          <Text style={styles.searchInput}>{resultArray}</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={styles.toolsSection}>
+      <TextInput
+        style={styles.searchInput}
+        name='text'
+        placeholder='Search Friends..'
+        placeholderTextColor='#A8A39F'
+        onChangeText={handleSearchInput}
+      ></TextInput>
+      <TouchableOpacity onPress={() => openProfile(getUserIdOfSearch)}>
+        <Text style={styles.searchInput}>{resultArray}</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -66,11 +64,11 @@ function CustomSearchBar(props) {
 const styles = StyleSheet.create({
   toolsSection: {
     backgroundColor: 'white',
-    width: 250,
+    width: 300,
     right: 20,
     borderRadius: 5,
     right: 90,
-    top: 10,
+    top: 70,
     shadowColor: '#000000',
     shadowOpacity: 0.8,
     shadowRadius: 2,
@@ -80,9 +78,9 @@ const styles = StyleSheet.create({
     },
   },
   searchInput: {
-    padding: 10,
+    padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: 'grey',
+    borderBottomColor: '#6CA9D6',
   },
   resultList: {
     backgroundColor: 'white',
