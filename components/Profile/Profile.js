@@ -3,10 +3,10 @@ import {
   ScrollView,
   Text,
   StyleSheet,
-  Image,
   View,
   TouchableOpacity,
 } from 'react-native';
+import { Image as RNImage } from 'react-native';
 import firebase from 'firebase/app';
 import { useFirestoreCollection, useFirestoreDocument } from '../hooks';
 import Wave from '../Images/wave.jpg';
@@ -19,6 +19,7 @@ import { ProfileButtons } from './ProfileButtons';
 import { ProfileInfo } from './ProfileInfo';
 import Avatar from '../Images/avatar.png';
 import { UploadCoverPicture } from '../AppComponents/UploadCoverPicture';
+import { Image } from 'react-native-expo-image-cache';
 
 function Profile(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -130,11 +131,11 @@ function Profile(props) {
           <Feather name='chevron-left' size={40} color='black' />
           {getUserProfileInfo.data.coverPicture ? (
             <Image
-              source={{ uri: getUserProfileInfo.data.coverPicture }}
+              uri={getUserProfileInfo.data.profilePicture}
               style={styles.coverImage}
             />
           ) : (
-            <Image source={Wave} style={styles.coverImage} />
+            <RNImage source={Wave} style={styles.coverImage} />
           )}
         </TouchableOpacity>
         {profileId !== userId ? null : (
@@ -148,11 +149,11 @@ function Profile(props) {
         <View style={styles.profileImageSection}>
           {getUserProfileInfo.data.profilePicture ? (
             <Image
-              source={{ uri: getUserProfileInfo.data.profilePicture }}
+              uri={getUserProfileInfo.data.profilePicture}
               style={styles.profileImage}
             />
           ) : (
-            <Image source={Avatar} style={styles.profileImage} />
+            <RNImage source={Avatar} style={styles.profileImage} />
           )}
 
           {profileId !== userId ? null : (

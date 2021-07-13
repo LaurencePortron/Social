@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Image as RNImage } from 'react-native';
+
+import { Image } from 'react-native-expo-image-cache';
 import { useHistory } from 'react-router-native';
 import moment from 'moment';
 import { Feelings } from './Feelings';
@@ -17,7 +20,7 @@ function Post({
   isWith,
   postId,
 }) {
-  // const [numberOfLikes, setNumberOfLikes] = useState(0);
+  const [userId, setUserId] = useState([]);
 
   const db = firebase.firestore();
   const history = useHistory();
@@ -46,17 +49,11 @@ function Post({
 
   const numberOfComments = fetchComments.length;
 
-  // const inCrementLikes = () => {
-  //   setNumberOfLikes(numberOfLikes + 1);
-  // };
-
-  // const addLikesToDb = (postId) => {
-  //   db.collection('posts').doc(postId).update({
-  //     numberOfLikes: numberOfLikes,
-  //   });
-  // };
-
-  // console.log(numberOfLikes);
+  const addLikesToDb = (postId) => {
+    db.collection('posts').doc(postId).update({
+      userWhoLiked: userId,
+    });
+  };
 
   const openPost = (postId) => {
     history.push(`/post/${postId}`);
@@ -77,12 +74,12 @@ function Post({
           {fetchUser.data.profilePicture ? (
             <TouchableOpacity onPress={() => goToProfile(idOfUser)}>
               <Image
-                source={{ uri: fetchUser.data.profilePicture }}
+                uri={fetchUser.data.profilePicture}
                 style={styles.avatarImage}
               />
             </TouchableOpacity>
           ) : (
-            <Image source={Avatar} style={styles.avatarImage} />
+            <RNImage source={Avatar} style={styles.avatarImage} />
           )}
 
           <View style={styles.detailsContainer}>
@@ -116,9 +113,7 @@ function Post({
       </View>
 
       <View style={styles.reactionContainer}>
-        <TouchableOpacity
-        // onPress={(() => inCrementLikes(postId), addLikesToDb(postId))}
-        >
+        <TouchableOpacity onPress={() => addLikesToDb(userId)}>
           <View style={styles.reactionSection}>
             <Text style={styles.heart}>&#x2661;</Text>
             <Text style={styles.reactionText}>Love</Text>

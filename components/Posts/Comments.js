@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useFirestoreDocument } from '../hooks';
 import firebase from 'firebase/app';
 import Avatar from '../Images/avatar.png';
 import moment from 'moment';
+import { Image } from 'react-native-expo-image-cache';
+import { Image as RNImage } from 'react-native';
 
 function Comments({ commentId, commentContent, postCreated, idOfUser }) {
   const db = firebase.firestore();
@@ -23,12 +25,12 @@ function Comments({ commentId, commentContent, postCreated, idOfUser }) {
         {fetchUser.data.profilePicture ? (
           <TouchableOpacity>
             <Image
-              source={{ uri: fetchUser.data.profilePicture }}
+              uri={fetchUser.data.profilePicture}
               style={styles.avatarImage}
             />
           </TouchableOpacity>
         ) : (
-          <Image source={Avatar} style={styles.avatarImage} />
+          <RNImage source={Avatar} style={styles.avatarImage} />
         )}
         <View>
           <View style={styles.comment}>

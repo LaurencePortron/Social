@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useHistory } from 'react-router-native';
 import { useFirestoreDocument } from '../hooks';
 import firebase from 'firebase/app';
 import Avatar from '../Images/avatar.png';
+import { Image } from 'react-native-expo-image-cache';
+import { Image as RNImage } from 'react-native';
 
 function Request({ friendId, userId }) {
   const history = useHistory();
@@ -53,11 +55,12 @@ function Request({ friendId, userId }) {
       <View style={styles.profileInfoContainer}>
         {fetchUserInfo.data.profilePicture ? (
           <Image
-            source={{ uri: fetchUserInfo.data.profilePicture }}
+            uri={fetchUserInfo.data.profilePicture}
+            style={styles.avatarImage}
             style={styles.avatarImage}
           />
         ) : (
-          <Image source={Avatar} style={styles.avatarImage} />
+          <RNImage source={Avatar} style={styles.avatarImage} />
         )}
         <Text style={styles.userName}>{fetchUserInfo.data.userName}</Text>
       </View>

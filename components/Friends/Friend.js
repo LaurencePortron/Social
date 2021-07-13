@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useFirestoreDocument } from '../hooks';
 import firebase from 'firebase/app';
 import Avatar from '../Images/avatar.png';
 import moment from 'moment';
 import { useHistory } from 'react-router-native';
+import { Image as RNImage } from 'react-native';
 
 function Friend({ friendId, friendsSince }) {
   const db = firebase.firestore();
@@ -27,12 +28,12 @@ function Friend({ friendId, friendsSince }) {
       {fetchFriendInfo.data.profilePicture ? (
         <TouchableOpacity onPress={() => goToProfile(friendId)}>
           <Image
-            source={{ uri: fetchFriendInfo.data.profilePicture }}
+            uri={fetchFriendInfo.data.profilePicture}
             style={styles.avatarImage}
           />
         </TouchableOpacity>
       ) : (
-        <Image source={Avatar} style={styles.avatarImage} />
+        <RNImage source={Avatar} style={styles.avatarImage} />
       )}
       <View style={styles.friendsData}>
         <Text style={styles.userName}>{fetchFriendInfo.data.userName}</Text>

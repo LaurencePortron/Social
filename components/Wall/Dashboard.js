@@ -3,7 +3,6 @@ import {
   ScrollView,
   View,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
@@ -13,6 +12,8 @@ import { Wall } from './Wall';
 import firebase from 'firebase/app';
 import { Footer } from './Footer';
 import { useHistory } from 'react-router-native';
+import { Image } from 'react-native-expo-image-cache';
+import { Image as RNImage } from 'react-native';
 
 function Dashboard(props) {
   const user = firebase.auth().currentUser;
@@ -39,7 +40,7 @@ function Dashboard(props) {
       <TouchableOpacity onPress={goToAddPost}>
         <View style={styles.mainSection}>
           <Image
-            source={{ uri: fetchAccounts.data.profilePicture }}
+            uri={fetchAccounts.data.profilePicture}
             style={styles.avatarImage}
           />
           <Text style={styles.postText}>Whats on your mind..</Text>

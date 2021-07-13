@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  Image,
   TextInput,
   TouchableOpacity,
   StyleSheet,
@@ -15,6 +14,7 @@ import { CustomModal } from '../Posts/CustomModal';
 import { Feelings } from '../Posts/Feelings';
 import { TagFriendsModal } from '../Friends/TagFriendsModal';
 import { TaggedFriend } from '../Friends/TaggedFriend';
+import { Image } from 'react-native-expo-image-cache';
 
 function AddPost(props) {
   const [post, setPost] = useState('');
@@ -83,7 +83,7 @@ function AddPost(props) {
       </View>
       <View style={styles.user}>
         <Image
-          source={{ uri: getCurrentLoggedUser.data.profilePicture }}
+          uri={getCurrentLoggedUser.data.profilePicture}
           style={styles.profileImage}
         />
         <View style={styles.userNameContainer}>

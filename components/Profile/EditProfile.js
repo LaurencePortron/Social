@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  Image,
   TextInput,
   TouchableOpacity,
   StyleSheet,
@@ -11,6 +10,7 @@ import { Feather } from '@expo/vector-icons';
 import firebase from 'firebase/app';
 import { useFirestoreDocument } from '../hooks';
 import { useHistory } from 'react-router-native';
+import { Image } from 'react-native-expo-image-cache';
 
 function EditProfile(props) {
   const history = useHistory();
@@ -63,14 +63,14 @@ function EditProfile(props) {
         <View style={styles.profileSection}>
           <Text style={styles.userPlaceHolder}>Profile Picture:</Text>
           <Image
-            source={{ uri: getCurrentLoggedUser.data.profilePicture }}
+            uri={getCurrentLoggedUser.data.profilePicture}
             style={styles.profilePicture}
           />
         </View>
         <View style={styles.profileSection}>
           <Text style={styles.userPlaceHolder}>Cover Photo:</Text>
           <Image
-            source={{ uri: getCurrentLoggedUser.data.profilePicture }}
+            uri={getCurrentLoggedUser.data.profilePicture}
             style={styles.profilePicture}
           />
         </View>
