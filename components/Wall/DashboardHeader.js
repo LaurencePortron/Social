@@ -6,6 +6,7 @@ import firebase from 'firebase/app';
 import { useFirestoreCollection } from '../hooks';
 import { Notifications } from '../Notifications/Notifications';
 import { CommentNotifications } from '../Notifications/CommentNotifications';
+import { LikesNotifications } from '../Notifications/LikesNotifications';
 
 function DashboardHeader(props) {
   const [searchIsOpen, setSearchIsOpen] = useState(false);
@@ -16,14 +17,33 @@ function DashboardHeader(props) {
   const userId = user.uid;
 
   const fetchFriendsNotifications = useFirestoreCollection(
-    db.collection('accounts').doc(userId).collection('friendsNotifications'),
+    db
+      .collection('accounts')
+      .doc(userId)
+      .collection('friendsNotifications')
+      .orderBy('created', 'desc'),
     []
   );
 
   const fetchCommentNotifications = useFirestoreCollection(
-    db.collection('accounts').doc(userId).collection('commentNotifications'),
+    db
+      .collection('accounts')
+      .doc(userId)
+      .collection('commentNotifications')
+      .orderBy('created', 'desc'),
     []
   );
+
+  const fetchLikesNotifications = useFirestoreCollection(
+    db
+      .collection('accounts')
+      .doc(userId)
+      .collection('likesNotifications')
+      .orderBy('created', 'desc'),
+    []
+  );
+
+  console.log(fetchLikesNotifications);
 
   return (
     <View style={styles.headerContainer}>
@@ -53,6 +73,21 @@ function DashboardHeader(props) {
             <View style={styles.notificationHeader}>
               <Text style={styles.notificationHeaderText}>Notifications</Text>
             </View>
+            {fetchLikesNotifications.map((likes) => {
+              return (
+                <LikesNotifications
+                  key={likes.id}
+                  postId={likes.data.post}
+                  created={likes.data.created}
+                  friendId={likes.data.userId}
+                  placeholder='liked your post'
+                  isRead={likes.data.markedAsRead}
+                  userId={userId}
+                  likeId={likes.id}
+                />
+              );
+            })}
+
             {fetchCommentNotifications.map((comment) => {
               return (
                 <CommentNotifications

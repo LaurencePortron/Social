@@ -44,7 +44,18 @@ function Post({ post, isWith, postId }) {
       .update({
         usersWhoLiked: firebase.firestore.FieldValue.arrayUnion(userId),
       });
+    db.collection('accounts')
+      .doc(post.userId)
+      .collection('likesNotifications')
+      .add({
+        created: firebase.firestore.Timestamp.fromDate(new Date()),
+        userId: userId,
+        post: postId,
+        markAsRead: false,
+      });
   };
+
+  //get id of the user who posted
 
   const openPost = (postId) => {
     history.push(`/post/${postId}`);
@@ -57,8 +68,6 @@ function Post({ post, isWith, postId }) {
   if (!fetchComments) {
     return null;
   }
-
-  console.log(numberOfComments);
 
   return (
     <View>

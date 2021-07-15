@@ -46,8 +46,6 @@ function OpenPost(props) {
     setComment(inputText);
   };
 
-  // we need the id of the user who posted the initial post
-
   const addCommentToPost = () => {
     db.collection('posts')
       .doc(postId)

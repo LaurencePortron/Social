@@ -6,6 +6,7 @@ import Avatar from '../Images/avatar.png';
 import moment from 'moment';
 import { useHistory } from 'react-router-native';
 import { Image as RNImage } from 'react-native';
+import { Image } from 'react-native-expo-image-cache';
 
 function Friend({ friendId, friendsSince }) {
   const db = firebase.firestore();
