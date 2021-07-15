@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
-  Image,
   TextInput,
-  FlatList,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';

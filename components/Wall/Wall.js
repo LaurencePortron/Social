@@ -54,10 +54,7 @@ function Wall({ profileId }) {
           return (
             <View key={post.id} style={styles.postSection}>
               <Post
-                idOfUser={post.data.userId}
-                selectedFeeling={post.data.feeling}
-                postCreated={post.data.created}
-                postContent={post.data.post}
+                post={post.data}
                 postId={post.id}
                 isWith={post.data.isWith}
               />

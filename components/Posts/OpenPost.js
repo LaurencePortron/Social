@@ -36,8 +36,6 @@ function OpenPost(props) {
     [postId]
   );
 
-  const numberOfComments = fetchComments.length;
-
   if (!fetchPost) {
     return null;
   }
@@ -83,26 +81,11 @@ function OpenPost(props) {
           onPressNavigation={backToDashboard}
         />
         <View style={{ marginTop: 10, marginLeft: 10 }}>
-          <Post
-            idOfUser={fetchPost.data.userId}
-            selectedFeeling={fetchPost.data.feeling}
-            postCreated={fetchPost.data.created}
-            postContent={fetchPost.data.post}
-            isWith={fetchPost.data.isWith}
-          />
+          <Post post={fetchPost.data} isWith={fetchPost.data.isWith} />
         </View>
 
         {fetchComments.map((comment) => {
-          return (
-            <Comments
-              key={comment.id}
-              postId={postId}
-              idOfUser={comment.data.user}
-              commentId={comment.id}
-              commentContent={comment.data.postComment}
-              postCreated={comment.data.created}
-            />
-          );
+          return <Comments key={comment.id} comment={comment.data} />;
         })}
       </View>
       <View

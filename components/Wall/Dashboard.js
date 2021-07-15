@@ -13,7 +13,6 @@ import firebase from 'firebase/app';
 import { Footer } from './Footer';
 import { useHistory } from 'react-router-native';
 import { Image } from 'react-native-expo-image-cache';
-import { Image as RNImage } from 'react-native';
 
 function Dashboard(props) {
   const user = firebase.auth().currentUser;

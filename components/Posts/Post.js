@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Image as RNImage } from 'react-native';
 
@@ -12,16 +12,9 @@ import Avatar from '../Images/avatar.png';
 import { Feather } from '@expo/vector-icons';
 import { TaggedFriend } from '../Friends/TaggedFriend';
 
-function Post({
-  idOfUser,
-  selectedFeeling,
-  postCreated,
-  postContent,
-  isWith,
-  postId,
-}) {
-  const [userId, setUserId] = useState([]);
-
+function Post({ post, isWith, postId }) {
+  const user = firebase.auth().currentUser;
+  const userId = user.uid;
   const db = firebase.firestore();
   const history = useHistory();
 
@@ -34,25 +27,23 @@ function Post({
   };
 
   const fetchUser = useFirestoreDocument(
-    db.collection('accounts').doc(idOfUser),
+    db.collection('accounts').doc(post.userId),
     []
   );
 
   const fetchComments = useFirestoreCollection(
-    db.collection('posts').doc(postId).collection('comments'),
+    db.collection('posts').doc(post.id).collection('comments'),
     []
   );
 
-  if (!fetchComments) {
-    return null;
-  }
-
   const numberOfComments = fetchComments.length;
 
-  const addLikesToDb = (postId) => {
-    db.collection('posts').doc(postId).update({
-      userWhoLiked: userId,
-    });
+  const addLikesToDb = () => {
+    db.collection('posts')
+      .doc(postId)
+      .update({
+        usersWhoLiked: firebase.firestore.FieldValue.arrayUnion(userId),
+      });
   };
 
   const openPost = (postId) => {
@@ -67,12 +58,14 @@ function Post({
     return null;
   }
 
+  console.log(numberOfComments);
+
   return (
     <View>
       <View>
         <View style={styles.userHeader}>
           {fetchUser.data.profilePicture ? (
-            <TouchableOpacity onPress={() => goToProfile(idOfUser)}>
+            <TouchableOpacity onPress={() => goToProfile(post.userId)}>
               <Image
                 uri={fetchUser.data.profilePicture}
                 style={styles.avatarImage}
@@ -85,7 +78,7 @@ function Post({
           <View style={styles.detailsContainer}>
             <View style={styles.userfeelings}>
               <Text style={styles.userName}>{fetchUser.data.userName}</Text>
-              <Feelings selectedFeeling={selectedFeeling} />
+              <Feelings selectedFeeling={post.feeling} />
             </View>
 
             {isWith ? (
@@ -97,28 +90,47 @@ function Post({
             ) : null}
 
             <Text style={styles.date}>
-              {moment(postCreated.toDate()).format('MMM Do')}
+              {moment(post.created.toDate()).format('MMM Do')}
             </Text>
           </View>
         </View>
-        <Text style={styles.post}>{postContent}</Text>
+        <Text style={styles.post}>{post.post}</Text>
       </View>
       <View style={styles.reactionData}>
         <View style={styles.reactionSection}>
-          <Text style={styles.reactionText}>0 likes</Text>
+          {post.usersWhoLiked ? (
+            <Text style={styles.reactionText}>
+              {post.usersWhoLiked.length} likes
+            </Text>
+          ) : (
+            <Text style={styles.reactionText}>0 likes</Text>
+          )}
         </View>
         <View style={styles.reactionSection}>
-          <Text style={styles.reactionText}>{numberOfComments} comments</Text>
+          {numberOfComments ? (
+            <Text style={styles.reactionText}>{numberOfComments} comments</Text>
+          ) : (
+            <Text style={styles.reactionText}>0 comments</Text>
+          )}
         </View>
       </View>
 
       <View style={styles.reactionContainer}>
         <TouchableOpacity onPress={() => addLikesToDb(userId)}>
-          <View style={styles.reactionSection}>
-            <Text style={styles.heart}>&#x2661;</Text>
-            <Text style={styles.reactionText}>Love</Text>
-          </View>
+          {(post.usersWhoLiked || []).find((user) => user === userId) ===
+          undefined ? (
+            <View style={styles.reactionSection}>
+              <Text style={styles.heart}>&#x2661;</Text>
+              <Text style={styles.reactionText}>Love</Text>
+            </View>
+          ) : (
+            <View style={styles.reactionSection}>
+              <Text style={styles.heartClicked}>&#x2665;</Text>
+              <Text style={styles.reactionText}>Loved</Text>
+            </View>
+          )}
         </TouchableOpacity>
+
         <TouchableOpacity onPress={() => openPost(postId)}>
           <View style={styles.reactionSection}>
             <Feather name='message-square' size={25} color='grey' />

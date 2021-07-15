@@ -7,11 +7,11 @@ import moment from 'moment';
 import { Image } from 'react-native-expo-image-cache';
 import { Image as RNImage } from 'react-native';
 
-function Comments({ commentId, commentContent, postCreated, idOfUser }) {
+function Comments({ comment }) {
   const db = firebase.firestore();
 
   const fetchUser = useFirestoreDocument(
-    db.collection('accounts').doc(idOfUser),
+    db.collection('accounts').doc(comment.user),
     []
   );
 
@@ -21,7 +21,7 @@ function Comments({ commentId, commentContent, postCreated, idOfUser }) {
 
   return (
     <View style={styles.commentContainer}>
-      <View key={commentId} style={styles.commentSection}>
+      <View key={comment.id} style={styles.commentSection}>
         {fetchUser.data.profilePicture ? (
           <TouchableOpacity>
             <Image
@@ -35,10 +35,10 @@ function Comments({ commentId, commentContent, postCreated, idOfUser }) {
         <View>
           <View style={styles.comment}>
             <Text style={styles.userName}>{fetchUser.data.userName}</Text>
-            <Text>{commentContent}</Text>
+            <Text>{comment.postComment}</Text>
           </View>
           <Text style={styles.date}>
-            {moment(postCreated.toDate()).format('MMM Do')}
+            {moment(comment.created.toDate()).format('MMM Do')}
           </Text>
         </View>
       </View>
