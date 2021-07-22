@@ -15,17 +15,22 @@ import { Feelings } from '../Posts/Feelings';
 import { TagFriendsModal } from '../Friends/TagFriendsModal';
 import { TaggedFriend } from '../Friends/TaggedFriend';
 import { Image } from 'react-native-expo-image-cache';
+import { UploadPostPicture } from '../AppComponents/UploadPostPicture';
 
 function AddPost(props) {
   const [post, setPost] = useState('');
   const [feeling, setFeeling] = useState('');
-  const [uploadOpen, setUploadOpen] = useState(false);
+  const [uploadPictureOpen, setUploadPictureOpen] = useState(false);
   const [tagFriend, setTagFriend] = useState('');
   const history = useHistory();
 
   const user = firebase.auth().currentUser;
   const userId = user.uid;
   const db = firebase.firestore();
+
+  const openUploadPostPicture = () => {
+    setUploadPictureOpen(!uploadPictureOpen);
+  };
 
   const handlePost = (inputText) => {
     setPost(inputText);
@@ -107,12 +112,14 @@ function AddPost(props) {
         onChangeText={handlePost}
       />
       <View style={styles.toolsContainer}>
-        <TouchableOpacity onPress={() => setUploadOpen(!uploadOpen)}>
+        <TouchableOpacity onPress={openUploadPostPicture}>
           <View style={styles.toolsSection}>
             <Feather name='camera' size={25} color='black' />
             <Text style={styles.toolText}>Photo</Text>
           </View>
         </TouchableOpacity>
+        {uploadPictureOpen ? <UploadPostPicture /> : null}
+
         <CustomModal
           placeholder={feelingplaceholder}
           addAFeeling={(emoji) => setFeeling(emoji)}

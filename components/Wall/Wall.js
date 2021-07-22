@@ -44,6 +44,8 @@ function Wall({ profileId }) {
     return null;
   }
 
+  console.log(fetchPosts);
+
   return (
     <View style={styles.postContainer}>
       {fetchPosts.map((post) => {
