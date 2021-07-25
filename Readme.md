@@ -21,7 +21,7 @@ And using Cloud functions for the first time!! :) (essentially for Algolia for n
 
 ## Screenshots
 
-![Screenshot](wall.png)
-![Screenshot](notifications.png)
+![Screenshot](./components/Images/wall.png)
+![Screenshot](./components/Images/notifications.png)
 
 https://user-images.githubusercontent.com/45975914/124748785-d1b3c100-df23-11eb-8026-5e7c616a3a65.MP4
