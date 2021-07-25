@@ -27,7 +27,6 @@ And using Cloud functions for the first time!! :) (essentially for Algolia for n
 ![Screenshot](./components/Images/notifications.png)
 ![Screenshot](./components/Images/search.png)
 
-![Screenshot](./components/Images/addPost.png)
 ![Screenshot](./components/Images/post.png)
 ![Screenshot](./components/Images/feeling.png)
 ![Screenshot](./components/Images/tagFriends.png)
