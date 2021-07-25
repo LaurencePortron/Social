@@ -21,7 +21,19 @@ And using Cloud functions for the first time!! :) (essentially for Algolia for n
 
 ## Screenshots
 
+![Screenshot](./components/Images/sigIn.png)
+![Screenshot](./components/Images/SignUp.png)
 ![Screenshot](./components/Images/wall.png)
 ![Screenshot](./components/Images/notifications.png)
+![Screenshot](./components/Images/search.png)
+
+![Screenshot](./components/Images/addPost.png)
+![Screenshot](./components/Images/post.png)
+![Screenshot](./components/Images/feeling.png)
+![Screenshot](./components/Images/tagFriends.png)
+![Screenshot](./components/Images/myProfile.png)
+![Screenshot](./components/Images/friendProfile.png)
+![Screenshot](./components/Images/friendList.png)
+![Screenshot](./components/Images/footer.png)
 
 https://user-images.githubusercontent.com/45975914/124748785-d1b3c100-df23-11eb-8026-5e7c616a3a65.MP4
